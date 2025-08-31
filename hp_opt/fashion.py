@@ -129,6 +129,33 @@ def build_model(cfg: TrainConfig):
 
 
 def train_one_epoch(model, loader, criterion, optimizer, device):
+    """
+    Trains a model for one epoch using the provided data loader, loss function, and optimizer.
+    Args:
+        model: The neural network model to be trained.
+        loader: DataLoader providing batches of input images and labels.
+        criterion: Loss function used to compute the training loss.
+        optimizer: Optimizer used to update model parameters.
+        device: Device (CPU or GPU) to perform computations on.
+    Returns:
+        Tuple containing:
+            - Average loss over the epoch.
+            - Average accuracy over the epoch.
+    Line-by-line description:
+        1. Sets the model to training mode.
+        2. Initializes running totals for loss and accuracy.
+        3. Iterates over each batch of images and labels from the loader.
+        4. Moves images and labels to the specified device for computation.
+        5. Resets gradients in the optimizer before the backward pass.
+        6. Computes model predictions (logits) for the batch.
+        7. Calculates the loss between predictions and true labels.
+        8. Performs backpropagation to compute gradients.
+        9. Updates model parameters using the optimizer.
+        10. Accumulates the batch loss, scaled by batch size.
+        11. Accumulates the batch accuracy, scaled by batch size.
+        12. Calculates the average loss and accuracy over the entire dataset.
+        13. Returns the average loss and accuracy for the epoch.
+    """
     model.train()
     running_loss = 0.0
     running_acc = 0.0
@@ -164,33 +191,43 @@ def evaluate(model, loader, criterion, device):
 
 
 def train_eval(cfg: TrainConfig):
+    # Set random seed for reproducibility
     set_seed(cfg.seed)
+    # Select device (GPU if available, else CPU)
     device = get_device()
     print(f"Device: {device}")
 
+    # Prepare data loaders for train, validation, and test sets
     train_loader, val_loader, test_loader = get_dataloaders(cfg)
+    # Build the model and move it to the selected device
     model = build_model(cfg).to(device)
 
+    # Define loss function and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
 
-    best_val_acc = 0.0
-    best_state = None
+    best_val_acc = 0.0  # Track best validation accuracy
+    best_state = None   # Store best model weights
 
+    # Training loop
     for epoch in range(1, cfg.epochs + 1):
+        # Train for one epoch
         tr_loss, tr_acc = train_one_epoch(model, train_loader, criterion, optimizer, device)
+        # Evaluate on validation set
         va_loss, va_acc = evaluate(model, val_loader, criterion, device)
         print(f"Epoch {epoch:02d}/{cfg.epochs} | Train loss {tr_loss:.4f} acc {tr_acc:.4f} | Val loss {va_loss:.4f} acc {va_acc:.4f}")
 
+        # Save model if validation accuracy improves
         if va_acc > best_val_acc:
             best_val_acc = va_acc
             best_state = {k: v.cpu() for k, v in model.state_dict().items()}
 
+    # Save the best model checkpoint to disk
     if best_state is not None:
         torch.save({"model_state_dict": best_state, "config": cfg.__dict__}, cfg.save_path)
         print(f"Saved best model to: {cfg.save_path} (val_acc={best_val_acc:.4f})")
 
-    # Final test evaluation with best state
+    # Load best model weights and evaluate on test set
     if best_state is not None:
         model.load_state_dict(best_state)
     te_loss, te_acc = evaluate(model, test_loader, criterion, device)
