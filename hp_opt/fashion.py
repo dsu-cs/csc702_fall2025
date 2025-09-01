@@ -9,6 +9,11 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, random_split
 from torchvision import datasets, transforms
 
+from ax.service.managed_loop import optimize
+
+
+
+
 # ---------------------------
 # Repro + Device
 # ---------------------------
@@ -190,7 +195,22 @@ def evaluate(model, loader, criterion, device):
     return running_loss / n, running_acc / n
 
 
-def train_eval(cfg: TrainConfig):
+def train_eval(params):
+    args = parse_args()
+    cfg = TrainConfig(
+        model_type=args.model,
+        batch_size=args.batch_size,
+        epochs=args.epochs,
+        lr=params['learning_rate'],
+        weight_decay=args.weight_decay,
+        dropout=args.dropout,
+        seed=args.seed,
+        val_split=args.val_split,
+        num_workers=args.num_workers,
+        data_dir=args.data_dir,
+        save_path=args.save_path,
+    )
+
     # Set random seed for reproducibility
     set_seed(cfg.seed)
     # Select device (GPU if available, else CPU)
@@ -233,6 +253,28 @@ def train_eval(cfg: TrainConfig):
     te_loss, te_acc = evaluate(model, test_loader, criterion, device)
     print(f"Test loss {te_loss:.4f} acc {te_acc:.4f}")
 
+    return te_acc
+
+# ---------------------------
+# Hyperparameter optimization
+# ---------------------------
+def train_evaluate(cfg: TrainConfig, params):
+    cfg.lr = params["learning_rate"]
+    # Here, insert PyTorch model training and validation logic using lr
+    val_acc, _ = train_eval(cfg)
+    return val_acc
+
+def optimize_hyperparameters(cfg: TrainConfig, rounds: int):
+    best_params, best_vals, experiment, model = optimize(
+        parameters=[
+            {"name": "learning_rate", "type": "range", "bounds": [0.001, 0.1]},
+        ],
+        evaluation_function=train_eval,
+        objective_name='val_accuracy',
+        total_trials=rounds,
+    )
+
+    return best_params, best_vals, experiment, model
 
 # ---------------------------
 # CLI
@@ -269,8 +311,8 @@ def main():
         data_dir=args.data_dir,
         save_path=args.save_path,
     )
-    train_eval(cfg)
-
+    #train_eval(cfg)
+    print(optimize_hyperparameters(cfg, rounds=10))
 
 if __name__ == "__main__":
     main()
