@@ -409,3 +409,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# Test loss 0.2067 acc 0.9282 -- Normal trained
+# Bayesian optimizatioin - Optuna Best Params: {'model': 'cnn', 'batch_size': 64, 'lr': 0.005322652913165422, 'weight_decay': 0.0034376217516396473, 'dropout': 0.1780653717557662}
+#Best Val Acc: 0.8781666669845581
