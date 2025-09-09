@@ -1,5 +1,6 @@
 import math
 import random
+import matplotlib.pyplot as plt
 
 def load_word_vectors(filepath, max_words=None):
     word_vectors = {}
@@ -22,7 +23,7 @@ def cosine_similarity(vec1, vec2):
         return 0
     return dot / (norm1 * norm2)
 
-def blob_game(word_vectors, seed=42):
+def blob_game(word_vectors, seed=42, visualize=False):
     words = list(word_vectors.keys())
     if len(words) < 2:
         print("Need at least 2 words to start the game.")
@@ -35,11 +36,12 @@ def blob_game(word_vectors, seed=42):
 
     vectors = word_vectors.copy()
     merge_count = 0
+    sizes_history = [[1], [1]]  # Track sizes for each blob
+
     while remaining_words:
         next_word = remaining_words.pop(0)
         best_blob = None
         best_sim = -1
-        # Only compare to the most recently added word in each blob
         for i, blob in enumerate(blobs):
             w = blob[-1]
             sim = cosine_similarity(vectors[w], vectors[next_word])
@@ -48,14 +50,28 @@ def blob_game(word_vectors, seed=42):
                 best_blob = i
         blobs[best_blob].append(next_word)
         merge_count += 1
-        #print(f"Added '{next_word}' to blob {best_blob} (similarity {best_sim:.4f}). {len(remaining_words)} words left.")
+        # Track sizes
+        for i in range(len(blobs)):
+            if len(sizes_history) <= i:
+                sizes_history.append([len(blobs[i])])
+            else:
+                sizes_history[i].append(len(blobs[i]))
 
     print("Blob game complete.")
-    # Determine which blob "won"
     blob_sizes = [len(blob) for blob in blobs]
     winner_index = blob_sizes.index(max(blob_sizes))
     print(f"Blob {winner_index} won with {blob_sizes[winner_index]} words.")
-    #print(f"Winning blob words: {blobs[winner_index]}")
+
+    # Visualization
+    if visualize:
+        for i, history in enumerate(sizes_history):
+            plt.plot(history, label=f'Blob {i}')
+        plt.xlabel('Steps')
+        plt.ylabel('Blob Size')
+        plt.title('Blob Growth Over Time')
+        plt.legend()
+        plt.show()
+
     return blobs
 
 if __name__ == "__main__":
@@ -63,5 +79,5 @@ if __name__ == "__main__":
         r"C:/Users/DSU/OneDrive - Dakota State University/Desktop/Classes/Grad/Math of AI 702/csc702_fall2025/emb_to_words/sample_vectors.txt",
         max_words=10000
     )
-    result_blobs = blob_game(vectors, seed=10)  # Change seed for different
+    result_blobs = blob_game(vectors, seed=10, visualize=True)
 
