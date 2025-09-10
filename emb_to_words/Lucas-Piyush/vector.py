@@ -76,7 +76,7 @@ def blob_game(word_vectors, seed=42, visualize=False):
 
 if __name__ == "__main__":
     vectors = load_word_vectors(
-        r"emb_to_words\Lucas-Piyush\sample_vectors.txt",
+        r"emb_to_words\sample_vectors.txt",
         max_words=10000
     )
     result_blobs = blob_game(vectors, seed=10, visualize=True)
