@@ -74,3 +74,49 @@ Performs **Principal Component Analysis (PCA)** to reduce vectors to 2D and plot
 - PCA plots require "matplotlib".  
 
 ### Second Approch
+
+# Word Embedding Vector Math  
+
+This Python script demonstrates how to work with **word embeddings** (word → vector mappings) using simple vector arithmetic. It loads word vectors from a file (`sample_vectors.txt`) and allows you to perform an analogy calculation of the form:  
+
+A - B + C  =>  ?  
+
+This is the same principle behind classic examples like *king – man + woman ≈ queen*.  
+
+---
+
+
+## 🚀 How to Run
+Run the script in your terminal or PowerShell:  
+```bash
+python embeddings_math.py
+```
+
+It will prompt you for three words:  
+```
+Enter words for formula 
+
+A - B + C 
+
+Word for A: king
+Word for B: man
+Word for C: woman
+```
+
+The script will:  
+1. Load the vectors for `A`, `B`, and `C`.  
+2. Compute **A – B** (subtracting vectors).  
+3. Add vector `C` to the result.  
+4. Print the resulting vector (this represents the target word’s position in embedding space).  
+
+---
+
+## 🛠 Functions Explained
+- `read(word)` → looks up the given word in `sample_vectors.txt` and returns its vector.  
+- `sub(VectorA, VectorB)` → subtracts one vector from another (A – B).  
+- `add(VectorA, VectorB)` → adds two vectors (A + B).  
+- `cosSim(VectorA, VectorB)` → computes cosine similarity between two vectors, a measure of closeness.  
+- `main()` → runs the analogy calculation by asking the user for A, B, and C.  
+
+---
+
