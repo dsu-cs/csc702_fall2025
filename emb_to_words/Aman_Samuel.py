@@ -19,6 +19,8 @@ def find_furthest_word(word):
     furthest_similarity = 1.0
     furthest_word = ''
     for embed in embeddings:
+        if embed == word:
+            continue # Excluding self
         sim = calculate_cosine_similarity(embeddings[word], embeddings[embed])
         if sim < furthest_similarity:
             furthest_similarity = sim 
@@ -31,6 +33,8 @@ def find_closest_similarity(word, similarity):
     closest_word = ''
     closest_similarity = 0.0
     for embed in embeddings:
+        if embed == word:
+            continue
         sim = calculate_cosine_similarity(embeddings[word], embeddings[embed])
         diff = abs(similarity - sim)
         if diff < closest_diff:
