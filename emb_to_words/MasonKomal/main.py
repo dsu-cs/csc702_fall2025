@@ -39,7 +39,7 @@ numeric_vectors = vectors[:, 1:].astype(float)
 
 x = 8050   # Queen
 y = 1113    # Woman
-z = 1246    # death
+z = 1200    # direct
 
 print(f'\n\nMeasuring the difference between Word {x} and Word {y}. These are "{word_labels[x]}" and "{word_labels[y]}".')
 
