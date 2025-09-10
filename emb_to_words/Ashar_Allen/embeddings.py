@@ -57,7 +57,7 @@ class EmbIndex:
 
     def check(self, w):
         if w not in self.index:
-            raise KeyError(f\"'{w}' not in vocabulary\")
+            raise KeyError(f"'{w}' not in vocabulary")
 
     def neighbors(self, word, top=10):
         self.check(word)
@@ -92,28 +92,28 @@ def cmdVocab(ei: EmbIndex, args):
 
 def cmdNeighbors(ei: EmbIndex, args):
     out = ei.neighbors(args.word, top=args.top)
-    print(f\"Nearest to '{args.word}':\")
+    print(f"Nearest to '{args.word}':")
     for w, s in out:
-        print(f\"  {w:20s}  cos={s:.4f}\")
+        print(f"  {w:20s}  cos={s:.4f}")
 
 def cmdAnalogy(ei: EmbIndex, args):
     out = ei.analogy(args.a, args.b, args.c, top=args.top)
-    print(f\"{args.a} : {args.b} :: {args.c} : ?\")
+    print(f"{args.a} : {args.b} :: {args.c} : ?")
     for w, s in out:
-        print(f\"  {w:20s}  cos={s:.4f}\")
+        print(f"  {w:20s}  cos={s:.4f}")
 
 def cmdDim(ei: EmbIndex, args):
-    print(f\"Vocab size: {len(ei.vocab)}\") 
-    print(f\"Vector dim: {ei.dim}\")
+    print(f"Vocab size: {len(ei.vocab)}") 
+    print(f"Vector dim: {ei.dim}")
 
 def cmdPca(ei: EmbIndex, args):
     words = args.words
     missing = [w for w in words if not ei.has(w)]
     if missing:
-        print(\"Warning: missing words:\", \", \".join(missing), file=sys.stderr)
+        print("Warning: missing words:", ", ".join(missing), file=sys.stderr)
     keep = [w for w in words if ei.has(w)]
     if len(keep) < 2:
-        raise SystemExit(\"Need at least 2 known words for PCA plot.\")
+        raise SystemExit("Need at least 2 known words for PCA plot.")
     X = ei.unit[[ei.index[w] for w in keep]]
     # PCA via SVD
     Xc = X - X.mean(0, keepdims=True)
@@ -126,40 +126,40 @@ def cmdPca(ei: EmbIndex, args):
     ax.scatter(coords[:,0], coords[:,1])
     for (x,y), w in zip(coords, keep):
         ax.text(x, y, w)
-    ax.set_title(\"PCA map of selected words\")
-    ax.set_xlabel(\"PC1\"); ax.set_ylabel(\"PC2\")
+    ax.set_title("PCA map of selected words")
+    ax.set_xlabel("PC1"); ax.set_ylabel("PC2")
     fig.tight_layout()
-    out = args.out or \"pca.png\"
+    out = args.out or "pca.png"
     fig.savefig(out, dpi=200)
-    print(f\"Saved PCA figure to {out}\")
+    print(f"Saved PCA figure to {out}")
 
 def buildParser():
-    p = argparse.ArgumentParser(description=\"CLI for word embeddings\") 
-    p.add_argument(\"--file\", required=True, help=\"Path to embeddings .txt file (word followed by floats per line)\")
-    sub = p.add_subparsers(dest=\"cmd\", required=True)
+    p = argparse.ArgumentParser(description="CLI for word embeddings") 
+    p.add_argument("--file", required=True, help="Path to embeddings .txt file (word followed by floats per line)")
+    sub = p.add_subparsers(dest="cmd", required=True)
 
-    sp = sub.add_parser(\"vocab\", help=\"List first N vocab entries (default all)\")
-    sp.add_argument(\"--top\", type=int, default=0, help=\"Show only first N words\")
+    sp = sub.add_parser("vocab", help="List first N vocab entries (default all)")
+    sp.add_argument("--top", type=int, default=0, help="Show only first N words")
     sp.set_defaults(func=cmdVocab)
 
-    sp = sub.add_parser(\"neighbors\", help=\"Find nearest neighbors for a word\")
-    sp.add_argument(\"--word\", required=True)
-    sp.add_argument(\"--top\", type=int, default=10)
+    sp = sub.add_parser("neighbors", help="Find nearest neighbors for a word")
+    sp.add_argument("--word", required=True)
+    sp.add_argument("--top", type=int, default=10)
     sp.set_defaults(func=cmdNeighbors)
 
-    sp = sub.add_parser(\"analogy\", help=\"Solve a:b::c:? (cosine)\")
-    sp.add_argument(\"--a\", required=True)
-    sp.add_argument(\"--b\", required=True)
-    sp.add_argument(\"--c\", required=True)
-    sp.add_argument(\"--top\", type=int, default=10)
+    sp = sub.add_parser("analogy", help="Solve a:b::c:? (cosine)")
+    sp.add_argument("--a", required=True)
+    sp.add_argument("--b", required=True)
+    sp.add_argument("--c", required=True)
+    sp.add_argument("--top", type=int, default=10)
     sp.set_defaults(func=cmdAnalogy)
 
-    sp = sub.add_parser(\"dim\", help=\"Show vocab size and vector dimension\")
+    sp = sub.add_parser("dim", help="Show vocab size and vector dimension")
     sp.set_defaults(func=cmdDim)
 
-    sp = sub.add_parser(\"pca\", help=\"Save a PCA 2D plot for selected words\") 
-    sp.add_argument(\"--words\", nargs=\"+\", required=True)
-    sp.add_argument(\"--out\", default=\"pca.png\")
+    sp = sub.add_parser("pca", help="Save a PCA 2D plot for selected words") 
+    sp.add_argument("--words", nargs="+", required=True)
+    sp.add_argument("--out", default="pca.png")
     sp.set_defaults(func=cmdPca)
 
     return p
@@ -171,7 +171,7 @@ def main(argv=None):
 
     txt_path = Path(args.file)
     if not txt_path.exists():
-        raise SystemExit(f\"File not found: {txt_path}\")
+        raise SystemExit(f"File not found: {txt_path}")
     vocab, vecs = loadEmbeddings(txt_path)
     ei = EmbIndex(vocab, vecs)
 
@@ -180,5 +180,5 @@ def main(argv=None):
     except KeyError as e:
         raise SystemExit(str(e))
 
-if __name__ == \"__main__\":
+if __name__ == "__main__":
     main()
