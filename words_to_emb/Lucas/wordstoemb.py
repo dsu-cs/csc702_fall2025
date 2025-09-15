@@ -4,7 +4,8 @@ from gensim.models import Word2Vec
 import numpy as np
 from numpy.linalg import norm
 from scipy.linalg import orthogonal_procrustes
-
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 romeo = "csc702_fall2025\words_to_emb\Lucas\juliet.txt"
 moby = "csc702_fall2025\words_to_emb\Lucas\moby.txt"
@@ -71,17 +72,6 @@ def most_similar_aligned(target, aligned_dict, topn=5):
 words_to_check = ["love", "death", "fate", "sea", "whale",
                   "heaven", "lord", "soul", "romance", "cunning"]
 
-for word in words_to_check:
-    if word in romeo_kv and word in moby_aligned:
-        print(f"\n🔹 Word: {word}")
-        print("Romeo & Juliet neighbors:")
-        print(romeo_kv.most_similar(word, topn=5))
-        
-        print("Moby-Dick neighbors:")
-        print(most_similar_aligned(word, moby_aligned, topn=5))
-    else:
-        print(f"\n⚠️ Word '{word}' not in both vocabularies.")
-# Compare how a target word relates to the same set of words in both corpora
 
 def compare_word_similarities(target, candidates, kv1, kv2_aligned):
     results = []
@@ -145,4 +135,27 @@ print(romeo_df.round(3))
 print("\n🔹 Moby-Dick similarity matrix:")
 print(moby_df.round(3))
 
+def top_shifts(romeo_df, moby_df, topn=10):
+    # Delta
+    delta_df = romeo_df - moby_df
+    
+    shifts = []
+    for i in range(len(delta_df.index)):
+        for j in range(i+1, len(delta_df.columns)):  # avoid duplicates & diagonal
+            w1, w2 = delta_df.index[i], delta_df.columns[j]
+            if pd.notna(delta_df.loc[w1, w2]):
+                diff = delta_df.loc[w1, w2]
+                shifts.append((w1, w2, diff, abs(diff)))
+    
+    # Sort by absolute difference
+    shifts_sorted = sorted(shifts, key=lambda x: -x[3])
+    
+    print(f"\n🔹 Top {topn} semantic shifts (Romeo vs Moby):")
+    for w1, w2, diff, absdiff in shifts_sorted[:topn]:
+        direction = "Romeo stronger" if diff > 0 else "Moby stronger"
+        print(f"{w1:>8} – {w2:<8} | Δ = {diff:.3f} ({direction})")
 
+    return shifts_sorted[:topn]
+
+# Run it
+top_shifts(romeo_df, moby_df, topn=10)
