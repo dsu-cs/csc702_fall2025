@@ -6,6 +6,8 @@ import re
 from collections import Counter
 import random
 
+
+
 # -------------------------------
 # 1. Load and clean the texts
 # -------------------------------
@@ -52,7 +54,7 @@ loader = DataLoader(dataset, batch_size=64, shuffle=True)
 # 4. Define LSTM model
 # -------------------------------
 class LM(nn.Module):
-    def __init__(self, vocab_size, embed_dim=128, hidden_dim=256):
+    def __init__(self, vocab_size, embed_dim=128, hidden_dim=128):
         super().__init__()
         self.embed = nn.Embedding(vocab_size, embed_dim)
         self.lstm = nn.LSTM(embed_dim, hidden_dim, batch_first=True)
@@ -68,20 +70,39 @@ model = LM(vocab_size)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.003)
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("Using device:", device)
+
+# Move model to GPU
+model = LM(vocab_size).to(device)
 # -------------------------------
 # 5. Train briefly
 # -------------------------------
-epochs = 5
+from tqdm import tqdm  # pip install tqdm
+
+# -------------------------------
+# Training loop with progress bar
+# -------------------------------
+epochs = 2
 for epoch in range(epochs):
     total_loss = 0
-    for X, y in loader:
+    pbar = tqdm(loader, desc=f"Epoch {epoch+1}/{epochs}")
+    
+    for X, y in pbar:
+        # Move batch to GPU/CPU device
+        X, y = X.to(device), y.to(device)
+
         optimizer.zero_grad()
         logits, _ = model(X)
-        loss = criterion(logits.transpose(1,2), y)  # shape fix
+        loss = criterion(logits.transpose(1, 2), y)
         loss.backward()
         optimizer.step()
+        
         total_loss += loss.item()
-    print(f"Epoch {epoch+1}, loss: {total_loss/len(loader):.4f}")
+        pbar.set_postfix(loss=f"{loss.item():.4f}")
+    
+    avg_loss = total_loss / len(loader)
+    print(f"Epoch {epoch+1} finished. Avg loss: {avg_loss:.4f}")
 
 # -------------------------------
 # 6. Text generation
