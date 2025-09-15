@@ -82,7 +82,14 @@ Steps:
 **Generated Poem:**
 
 ```
-A Poem of Many Me
+A Poem of Many Meanings
+by A Little Automaton
+
+
+01. O love, where smooth leans to mind, thou changest hue.
+02. In parting's hush and sorrow's thunder, night walks anew.
+...
+— fin —
 ```
 
 <img width="1153" height="882" alt="image" src="https://github.com/user-attachments/assets/261735b3-a6b4-4af8-bbee-107937da0f53" />
@@ -158,6 +165,7 @@ python shakespeare_embeddings.py --vector-size 300 --window 7 --min-count 5 --ep
 ## License
 - Shakespeare’s works are public domain.
 - Code released under MIT License.
+
 
 
 
