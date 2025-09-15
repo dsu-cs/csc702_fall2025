@@ -88,7 +88,7 @@ A Poem of Many Me
 <img width="1153" height="882" alt="image" src="https://github.com/user-attachments/assets/261735b3-a6b4-4af8-bbee-107937da0f53" />
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
-
+# Second DEMO
 This project demonstrates **Word Embeddings** using Shakespeare’s complete works from [Project Gutenberg (ebook #100)](https://www.gutenberg.org/ebooks/100). It trains a **Word2Vec** model on the text and provides interactive examples like nearest neighbors, analogies, and t-SNE visualizations.
 
 ## Features
@@ -158,5 +158,6 @@ python shakespeare_embeddings.py --vector-size 300 --window 7 --min-count 5 --ep
 ## License
 - Shakespeare’s works are public domain.
 - Code released under MIT License.
+
 
 
