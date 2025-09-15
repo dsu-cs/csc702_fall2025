@@ -1,5 +1,94 @@
 # Shakespeare Word Embeddings Demo
 
+# Shakespeare Context-Poet
+
+This project creates a fun **AI-flavored poetry generator** using Shakespeare’s complete works from [Project Gutenberg (ebook #100)](https://www.gutenberg.org/ebooks/100).
+
+The program:
+
+1. Downloads and cleans Shakespeare’s corpus.
+2. Finds **10 random words** that appear in **different contexts**.
+3. Shows those words with short context snippets in a text box.
+4. Generates a **poem** that uses each word, reflecting its contextual flavors.
+
+---
+
+## Requirements
+
+* **Python 3.9+** (works with 3.8+, but tested with 3.9/3.10)
+* **tkinter** (for GUI)
+* **requests** (for downloading corpus)
+
+### Installing tkinter
+
+* **Ubuntu/Debian**:
+
+  ```bash
+  sudo apt-get install python3-tk
+  ```
+* **Fedora/RHEL**:
+
+  ```bash
+  sudo dnf install python3-tkinter
+  ```
+* **macOS**: Included with the official python.org installer. If missing:
+
+  ```bash
+  brew install python-tk
+  ```
+* **Windows**: Included by default with python.org installer. To test:
+
+  ```bash
+  python -m tkinter
+  ```
+
+### Install other dependencies
+
+```bash
+pip install requests
+```
+
+---
+
+## Usage
+
+Run the script:
+
+```bash
+python context_poet.py
+```
+
+Steps:
+
+1. Click **“Pick 10 Words”** to extract random words and their contexts.
+2. Read their context snippets in the top box.
+3. Click **“Write Poem”** to generate a poem using those words.
+
+---
+
+## Example Output
+
+**Context Box (snippet):**
+
+```
+— LOVE —
+  · Love looks not with the eyes, but with the mind…
+  · The course of true love never did run smooth…
+
+— NIGHT —
+  · Good night, good night! Parting is such sweet sorrow…
+```
+
+**Generated Poem:**
+
+```
+A Poem of Many Me
+```
+
+<img width="1153" height="882" alt="image" src="https://github.com/user-attachments/assets/261735b3-a6b4-4af8-bbee-107937da0f53" />
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 This project demonstrates **Word Embeddings** using Shakespeare’s complete works from [Project Gutenberg (ebook #100)](https://www.gutenberg.org/ebooks/100). It trains a **Word2Vec** model on the text and provides interactive examples like nearest neighbors, analogies, and t-SNE visualizations.
 
 ## Features
@@ -69,4 +158,5 @@ python shakespeare_embeddings.py --vector-size 300 --window 7 --min-count 5 --ep
 ## License
 - Shakespeare’s works are public domain.
 - Code released under MIT License.
+
 
