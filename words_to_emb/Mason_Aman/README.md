@@ -6,6 +6,9 @@ So for instance, say you have a word that doesn't translate that great, we are g
 
 Further, if time allows we will explore looking at surrounding words and see if word order/words used will dramatically change the similarity between languages. For instance, "Do you speak German?" Turns into "Sprechen Sie Deutsch?". This word-for-word translates to "Speak you german?". So we have some information change. But the meaning remains the same. So can we determine how similar sentences like these are, or possibly measure how similar sentences are? Can we measure if some sentences translate better than others?
 
-The process we implemented:
 
-First we had to have two vector embedding sets (English and German). 
+
+The process we implemented for individual word comparison between languages:
+
+
+
