@@ -6,156 +6,150 @@ from numpy.linalg import norm
 from scipy.linalg import orthogonal_procrustes
 import seaborn as sns
 import matplotlib.pyplot as plt
+import pandas as pd
 
-romeo = "csc702_fall2025\words_to_emb\Lucas\juliet.txt"
-moby = "csc702_fall2025\words_to_emb\Lucas\moby.txt"
-# Make sure tokenizer is available
+# Paths to your local files
+romeo = "csc702_fall2025\\words_to_emb\\Lucas\\juliet.txt"
+moby = "csc702_fall2025\\words_to_emb\\Lucas\\moby.txt"
+modern = "csc702_fall2025\\words_to_emb\\Lucas\\modern.txt"
+
+# Ensure NLTK punkt is available
 nltk.download("punkt")
 
-# --- Step 1: Load local files ---
-with open(romeo, "r", encoding="utf-8") as f:
-    romeo_text = f.read()
-
-with open(moby, "r", encoding="utf-8") as f:
-    moby_text = f.read()
-
-# --- Step 2: Preprocess into sentences ---
+# --- Step 1: Preprocess into sentences ---
 def preprocess_sentences(text):
     sentences = sent_tokenize(text)
     tokenized = []
     for sent in sentences:
         tokens = word_tokenize(sent.lower())
-        tokens = [t for t in tokens if t.isalpha()]  # keep words only
+        tokens = [t for t in tokens if t.isalpha()]
         if tokens:
             tokenized.append(tokens)
     return tokenized
 
+# Load texts
+with open(romeo, "r", encoding="utf-8") as f:
+    romeo_text = f.read()
+with open(moby, "r", encoding="utf-8") as f:
+    moby_text = f.read()
+with open(modern, "r", encoding="utf-8") as f:
+    modern_text = f.read()
+
 romeo_sentences = preprocess_sentences(romeo_text)
 moby_sentences = preprocess_sentences(moby_text)
+modern_sentences = preprocess_sentences(modern_text)
 
-# --- Step 3: Train Word2Vec models ---
-romeo_model = Word2Vec(
-    sentences=romeo_sentences, vector_size=100, window=10,
-    min_count=2, workers=4, epochs=100
-)
-moby_model = Word2Vec(
-    sentences=moby_sentences, vector_size=100, window=10,
-    min_count=2, workers=4, epochs=100
-)
+# --- Step 2: Train Word2Vec models ---
+def train_model(sentences):
+    return Word2Vec(
+        sentences=sentences, vector_size=100, window=10,
+        min_count=2, workers=4, epochs=100
+    ).wv
 
-romeo_kv = romeo_model.wv
-moby_kv = moby_model.wv
+romeo_kv = train_model(romeo_sentences)
+moby_kv = train_model(moby_sentences)
+modern_kv = train_model(modern_sentences)
 
-# --- Step 4: Align embeddings with Procrustes ---
-common_vocab = list(set(romeo_kv.key_to_index).intersection(set(moby_kv.key_to_index)))
-romeo_matrix = np.array([romeo_kv[w] for w in common_vocab])
-moby_matrix = np.array([moby_kv[w] for w in common_vocab])
+# --- Step 3: Align embeddings ---
+def align_to_reference(ref_kv, other_kv):
+    common_vocab = list(set(ref_kv.key_to_index).intersection(set(other_kv.key_to_index)))
+    ref_matrix = np.array([ref_kv[w] for w in common_vocab])
+    other_matrix = np.array([other_kv[w] for w in common_vocab])
+    R, _ = orthogonal_procrustes(other_matrix, ref_matrix)
+    return {w: other_kv[w] @ R for w in other_kv.key_to_index}
 
-R, _ = orthogonal_procrustes(moby_matrix, romeo_matrix)
-moby_aligned = {w: moby_kv[w] @ R for w in moby_kv.key_to_index}
+moby_aligned = align_to_reference(romeo_kv, moby_kv)
+modern_aligned = align_to_reference(romeo_kv, modern_kv)
 
-# --- Step 5: Helpers ---
+# --- Step 4: Similarity helpers ---
 def cosine_similarity(vec1, vec2):
     return np.dot(vec1, vec2) / (norm(vec1) * norm(vec2))
 
-def most_similar_aligned(target, aligned_dict, topn=5):
-    if target not in aligned_dict:
-        return []
-    target_vec = aligned_dict[target]
-    sims = {}
-    for w, vec in aligned_dict.items():
-        if w != target:
-            sims[w] = cosine_similarity(target_vec, vec)
-    return sorted(sims.items(), key=lambda x: -x[1])[:topn]
-
-# --- Step 6: Compare key words ---
-words_to_check = ["love", "death", "fate", "sea", "whale",
-                  "heaven", "lord", "soul", "romance", "cunning"]
-
-
-def compare_word_similarities(target, candidates, kv1, kv2_aligned):
-    results = []
-    if target not in kv1 or target not in kv2_aligned:
-        print(f"⚠️ '{target}' not in both vocabularies.")
-        return results
-    
-    for cand in candidates:
-        if cand in kv1 and cand in kv2_aligned:
-            sim1 = cosine_similarity(kv1[target], kv1[cand])
-            sim2 = cosine_similarity(moby_aligned[target], moby_aligned[cand])
-            results.append((cand, sim1, sim2))
-    return results
-
-# Example usage
-target_word = "love"
-candidates = ["death", "fate", "sea", "whale", "heaven", "soul", "lord"]
-
-comparisons = compare_word_similarities(target_word, candidates, romeo_kv, moby_aligned)
-
-print(f"\n🔹 Similarity comparisons for '{target_word}':")
-for cand, sim1, sim2 in comparisons:
-    print(f"{cand:>10} | Romeo: {sim1:.3f} | Moby: {sim2:.3f}")
-
-import pandas as pd
-
-def similarity_matrix(words, kv1, kv2_aligned):
-    data_romeo = []
-    data_moby = []
-    
+def similarity_matrix(words, kv):
+    data = []
     for w1 in words:
-        row_r = []
-        row_m = []
+        row = []
         for w2 in words:
-            if w1 in kv1 and w2 in kv1:
-                sim_r = cosine_similarity(kv1[w1], kv1[w2])
+            if w1 in kv and w2 in kv:
+                sim = cosine_similarity(kv[w1], kv[w2])
             else:
-                sim_r = None
-            if w1 in kv2_aligned and w2 in kv2_aligned:
-                sim_m = cosine_similarity(moby_aligned[w1], moby_aligned[w2])
-            else:
-                sim_m = None
-            row_r.append(sim_r)
-            row_m.append(sim_m)
-        data_romeo.append(row_r)
-        data_moby.append(row_m)
-    
-    df_romeo = pd.DataFrame(data_romeo, index=words, columns=words)
-    df_moby = pd.DataFrame(data_moby, index=words, columns=words)
-    return df_romeo, df_moby
+                sim = None
+            row.append(sim)
+        data.append(row)
+    return pd.DataFrame(data, index=words, columns=words)
 
-# Run the comparison
+# --- Step 5: Build matrices ---
 words_to_check = ["love", "death", "fate", "sea", "whale",
                   "heaven", "lord", "soul", "romance", "cunning"]
 
-romeo_df, moby_df = similarity_matrix(words_to_check, romeo_kv, moby_aligned)
+romeo_df = similarity_matrix(words_to_check, romeo_kv)
+moby_df = similarity_matrix(words_to_check, moby_aligned)
+modern_df = similarity_matrix(words_to_check, modern_aligned)
 
 print("\n🔹 Romeo & Juliet similarity matrix:")
 print(romeo_df.round(3))
-
 print("\n🔹 Moby-Dick similarity matrix:")
 print(moby_df.round(3))
-
-def top_shifts(romeo_df, moby_df, topn=10):
-    # Delta
-    delta_df = romeo_df - moby_df
-    
+print("\n🔹 A Modern Instance similarity matrix:")
+print(modern_df.round(3))
+# --- Step 7: Compare shifts ---
+def top_shifts(df1, df2, label1, label2, topn=10):
+    delta_df = df1 - df2
     shifts = []
     for i in range(len(delta_df.index)):
-        for j in range(i+1, len(delta_df.columns)):  # avoid duplicates & diagonal
+        for j in range(i+1, len(delta_df.columns)):
             w1, w2 = delta_df.index[i], delta_df.columns[j]
             if pd.notna(delta_df.loc[w1, w2]):
                 diff = delta_df.loc[w1, w2]
                 shifts.append((w1, w2, diff, abs(diff)))
-    
-    # Sort by absolute difference
     shifts_sorted = sorted(shifts, key=lambda x: -x[3])
-    
-    print(f"\n🔹 Top {topn} semantic shifts (Romeo vs Moby):")
-    for w1, w2, diff, absdiff in shifts_sorted[:topn]:
-        direction = "Romeo stronger" if diff > 0 else "Moby stronger"
+    print(f"\n🔹 Top {topn} semantic shifts ({label1} vs {label2}):")
+    for w1, w2, diff, _ in shifts_sorted[:topn]:
+        direction = f"{label1} stronger" if diff > 0 else f"{label2} stronger"
         print(f"{w1:>8} – {w2:<8} | Δ = {diff:.3f} ({direction})")
-
     return shifts_sorted[:topn]
 
-# Run it
-top_shifts(romeo_df, moby_df, topn=10)
+# Pairwise comparisons
+top_shifts(romeo_df, moby_df, "Romeo", "Moby", topn=10)
+top_shifts(romeo_df, modern_df, "Romeo", "Modern", topn=10)
+top_shifts(moby_df, modern_df, "Moby", "Modern", topn=10)
+
+from sklearn.decomposition import PCA
+
+def plot_pca(words, ref_kv, aligned_kvs, labels):
+    # Collect embeddings for all corpora
+    vectors, corpus_labels, word_labels = [], [], []
+    for word in words:
+        for kv, label in zip(aligned_kvs, labels):
+            if word in kv:
+                vectors.append(kv[word])
+                corpus_labels.append(label)
+                word_labels.append(word)
+    
+    # Run PCA
+    pca = PCA(n_components=2)
+    reduced = pca.fit_transform(vectors)
+
+    # Plot
+    plt.figure(figsize=(10, 8))
+    colors = {"Romeo": "red", "Moby": "blue", "Modern": "green"}
+
+    for i, (x, y) in enumerate(reduced):
+        plt.scatter(x, y, color=colors[corpus_labels[i]], label=corpus_labels[i] if i < len(words) else "")
+        plt.text(x+0.01, y+0.01, f"{word_labels[i]} ({corpus_labels[i]})", fontsize=9)
+
+    # Legend
+    handles = [plt.Line2D([0],[0], marker="o", color="w", label=lab,
+                          markerfacecolor=col, markersize=10)
+               for lab, col in colors.items()]
+    plt.legend(handles=handles)
+    plt.title("PCA Projection of Word Embeddings Across Corpora")
+    plt.xlabel("PC1")
+    plt.ylabel("PC2")
+    plt.tight_layout()
+    plt.show()
+
+# --- Run PCA plot ---
+plot_pca(words_to_check, romeo_kv,
+         [romeo_kv, moby_aligned, modern_aligned],
+         ["Romeo", "Moby", "Modern"])
