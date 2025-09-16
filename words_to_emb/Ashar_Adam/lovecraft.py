@@ -111,7 +111,8 @@ def train_w2v(
     return model
 
 
-def neighbors(model: Word2Vec, words: list[str], topn: int = 10):
+def neighbors(model: Word2Vec, words: list[str], topn: int = 10) -> dict[str, dict[str, float]] :
+    outp = collections.defaultdict(dict)
     for w in words:
         if w not in model.wv:
             print(f"[neighbors] '{w}' not in vocab — try a different word.")
@@ -120,10 +121,13 @@ def neighbors(model: Word2Vec, words: list[str], topn: int = 10):
         print(f"\nTop {topn} neighbors of '{w}':")
         for i, (tok, score) in enumerate(sims, 1):
             print(f"  {i:2d}. {tok:>15s}   cos={score:.3f}")
+            outp[w][tok] = score
+    return outp
 
 # End Ashar's code. --------------------------------------------------------------------
 
 text = get_lovecraft_text()
+
 sentences = to_sentences(text)
 print(f"Number of sentences: {len(sentences):,}")
 print(f"Number of words: {sum(len(s) for s in sentences):,}")
@@ -134,4 +138,20 @@ print("50 most common words:", wordfreq.most_common(50))
 print("50 pretty common words:", wordfreq.most_common(1000)[-50:])  # least common of the top 1000
 model = train_w2v(sentences)
 
-neighbors(model, ['cthulhu', 'nyarlathotep', "language", "dread", "tortured"]) #He didn't actually use "Euclidean" as often as I thought.
+nbrs = neighbors(model, ['cthulhu', 'nyarlathotep', "language", "dread", "tortured"]) #He didn't actually use "Euclidean" as often as I thought.
+
+def plot_neighbors(neighbors):  # Plot neighbors using seaborn as a scatterplot
+    for word, sims in neighbors.items():
+        plt.figure(figsize=(10, 6))
+        tokens = list(sims.keys())
+        scores = list(sims.values())
+        sns.scatterplot(x=tokens, y=scores)
+        plt.title(f'Top {len(tokens)} neighbors of "{word}"')
+        plt.xlabel('Word')
+        plt.ylabel('Cosine Similarity')
+        plt.xticks(rotation=45)
+        plt.show()
+
+        plt.savefig(OUT / ("neighbors_%s.png" % word))
+
+plot_neighbors(nbrs)
