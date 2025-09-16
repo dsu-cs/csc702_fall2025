@@ -8,10 +8,15 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 
-# Paths to your local files
-romeo = "csc702_fall2025\\words_to_emb\\Lucas\\juliet.txt"
-moby = "csc702_fall2025\\words_to_emb\\Lucas\\moby.txt"
-modern = "csc702_fall2025\\words_to_emb\\Lucas\\modern.txt"
+from pathlib import Path
+
+# Get the directory where this script is located
+base_dir = Path(__file__).parent
+
+# Files are in the same folder as the script
+romeo = base_dir / "juliet.txt"
+moby = base_dir / "moby.txt"
+modern = base_dir / "modern.txt"
 
 # Ensure NLTK punkt is available
 nltk.download("punkt")
