@@ -1,0 +1,90 @@
+ ================================================= 
+ === finding similar words to southern dialect === 
+ ================================================= 
+closest common word to dat: dan
+dat's nearest 5 neighbors:
+		('noo', 0.8944900035858154)
+		('dan', 0.8878747820854187)
+		('dem', 0.8858128786087036)
+		("sump'n", 0.8807861804962158)
+		('gwine', 0.8787857890129089)
+closest common word to 'em: lazy
+'em's nearest 5 neighbors:
+		('lazy', 0.7988579869270325)
+		('jest', 0.7958418130874634)
+		('thar', 0.7953552007675171)
+		('gals', 0.7938219904899597)
+		('clar', 0.7930186986923218)
+closest common word to doan: kin
+doan's nearest 5 neighbors:
+		("'i", 0.951807975769043)
+		("'lows", 0.9390382766723633)
+		('kin', 0.9347845315933228)
+		('suh', 0.9327792525291443)
+		('dunno', 0.9320029616355896)
+closest common word to de: den
+de's nearest 5 neighbors:
+		('dere', 0.873978853225708)
+		('en', 0.8650637865066528)
+		('fum', 0.8625816702842712)
+		("roun'", 0.8403818607330322)
+		('yuther', 0.838516354560852)
+closest common word to en: den
+en's nearest 5 neighbors:
+		('wid', 0.9300838708877563)
+		("roun'", 0.9298210144042969)
+		('den', 0.9218665361404419)
+		('dere', 0.9200959801673889)
+		('fum', 0.9199748039245605)
+closest common word to gwyne: um
+gwyne's nearest 5 neighbors:
+		('yit', 0.970690131187439)
+		('um', 0.9648541212081909)
+		("jis'", 0.9627126455307007)
+		("you's", 0.9605432748794556)
+		("wouldn'", 0.9598364233970642)
+ ================================================= 
+ ==== finding similar words to scots dialect  ==== 
+ ================================================= 
+closest common word to hae: wi
+hae's nearest 5 neighbors:
+		("ha'e", 0.8712103366851807)
+		('hadna', 0.8295088410377502)
+		('hed', 0.825480043888092)
+		('haena', 0.8231189846992493)
+		('wud', 0.8060808777809143)
+closest common word to o': vera
+o''s nearest 5 neighbors:
+		('maist', 0.7947752475738525)
+		('intil', 0.7879989743232727)
+		('intill', 0.7812826037406921)
+		('haill', 0.7768027782440186)
+		("w'y", 0.7606124877929688)
+closest common word to oor: wi
+oor's nearest 5 neighbors:
+		('wi', 0.8458077907562256)
+		("oorsel's", 0.8389881253242493)
+		('herts', 0.8276770710945129)
+		('oorsels', 0.8269543647766113)
+		('themsels', 0.8207647204399109)
+closest common word to ye: du
+ye's nearest 5 neighbors:
+		("yersel'", 0.8368873000144958)
+		('du', 0.8051815629005432)
+		('siller', 0.7953482866287231)
+		('hoo', 0.7940574288368225)
+		('hed', 0.7927297949790955)
+closest common word to ane: wi
+ane's nearest 5 neighbors:
+		('ilk', 0.8517159223556519)
+		('bairns', 0.8444451689720154)
+		("bein'", 0.8422332406044006)
+		('maist', 0.8401779532432556)
+		('anither', 0.8396759033203125)
+closest common word to sae: aye
+sae's nearest 5 neighbors:
+		("seein'", 0.8451217412948608)
+		('forbye', 0.8428176641464233)
+		('aye', 0.8386420011520386)
+		('muckle', 0.8365024328231812)
+		('hed', 0.8361845016479492)
