@@ -23,3 +23,5 @@ For the results, most of it was expected and good. For instance, with the small 
 There was one problem. When comparing English words to German words, sometimes English words would be included in the search results (in the german vocab) for the large datasets. My guess is that my function may be flawed, or the dataset may include English words because it is simply frequency counts from various articles. These articles (though in German), sometimes include english words because of how popular/common English is worldwide. That is my guess. It worked fine in the small dataset example though, which was good!
 
 In sum, it seemed that there was a mysterious result with the English query in the larger dataset, but all other prompts had expected results that agreed with my hypotheses.
+
+At last we also implement method to compare similarites between english sentence to german sentence and it worked well. The cosine similarity was exactly correct on the comparison result.
