@@ -183,4 +183,52 @@ def evaluate_model(model_en, model_es, word_pairs):
 final_score = evaluate_model(english_model, spanish_model, word_pairs)
 print("Final average cosine similarity across word pairs:", final_score)
 
+# --- Visualization of English-Spanish word embeddings ---
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+
+# Filter out words that might be missing in the models
+words_en = [w for w, _ in word_pairs if w in english_model.wv]
+words_es = [w for _, w in word_pairs if w in spanish_model.wv]
+
+# Extract vectors
+vectors_en = np.array([english_model.wv[w] for w in words_en])
+vectors_es = np.array([spanish_model.wv[w] for w in words_es])
+
+# Optional: normalize vectors to compare distances better
+vectors_en = vectors_en / np.linalg.norm(vectors_en, axis=1, keepdims=True)
+vectors_es = vectors_es / np.linalg.norm(vectors_es, axis=1, keepdims=True)
+
+# Combine vectors for PCA
+all_vectors = np.vstack([vectors_en, vectors_es])
+all_words = words_en + words_es
+languages = ['EN']*len(words_en) + ['ES']*len(words_es)
+
+# Dimensionality reduction
+pca = PCA(n_components=2)
+vectors_2d = pca.fit_transform(all_vectors)
+
+# Plot
+plt.figure(figsize=(10, 8))
+for i, word in enumerate(all_words):
+    x, y = vectors_2d[i]
+    color = 'blue' if languages[i] == 'EN' else 'red'
+    plt.scatter(x, y, color=color)
+    plt.text(x+0.01, y+0.01, word, fontsize=12)
+
+# Draw lines connecting English-Spanish word pairs
+for i in range(len(words_en)):
+    x_values = [vectors_2d[i, 0], vectors_2d[i+len(words_en), 0]]
+    y_values = [vectors_2d[i, 1], vectors_2d[i+len(words_en), 1]]
+    plt.plot(x_values, y_values, 'gray', linestyle='--')
+
+plt.title('English (blue) vs Spanish (red) Word Embeddings')
+plt.xlabel('PCA Dimension 1')
+plt.ylabel('PCA Dimension 2')
+plt.grid(True)
+plt.show()
+
+
 
