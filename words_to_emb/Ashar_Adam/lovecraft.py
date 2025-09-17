@@ -31,7 +31,7 @@ random.seed(SEED)
 
 RAW_PATH = DATA / "lovecraft.txt"
 MODEL_PATH = MODELS / "lovecraft.w2v"
-W2V_PATH = MODELS / "lovecraft.txt"
+W2V_PATH = MODELS / "lovecraft.bin"
 TSNE_PNG = OUT / "embedding_tsne.png"
 TSV_EMB = OUT / "lovecraft_embeddings.tsv"
 TSV_META = OUT / "lovecraft_metadata.tsv"
@@ -135,8 +135,8 @@ print(f"Number of words: {sum(len(s) for s in sentences):,}")
 wordfreq = word_frequencies(sentences)
 print(f"Vocabulary size: {len(wordfreq):,}")
 print(wordfreq['cthulhu'])
-print("50 most common words:", wordfreq.most_common(50))
-print("50 pretty common words:", wordfreq.most_common(1000)[-50:])  # least common of the top 1000
+print("10 most common words:", wordfreq.most_common(10))
+print("10 pretty common words:", wordfreq.most_common(1000)[-10:])  # least common of the top 1000
 model = train_w2v(sentences)
 
 nbrs = neighbors(model, ['cthulhu', 'nyarlathotep', "language", "dread", "tortured"]) #He didn't actually use "Euclidean" as often as I thought.
@@ -165,10 +165,12 @@ import nltk
 nltk.download('stopwords')
 stopwords_list = stopwords.words('english')
 
-#model.wv.save_word2vec_format(W2V_PATH, binary=False)
+if not W2V_PATH.exists():
+    model.wv.save_word2vec_format(W2V_PATH, binary=True)
 
 #Keep getting an error here:     raise EOFError("unexpected end of input; is count incorrect or file otherwise damaged?")
 #models/lovecraft.txt looks fine to me.
+# So I switched to binary format which nlpaug seems to like better.
 aug = naw.WordEmbsAug(
     model_type='word2vec',
     model_path=W2V_PATH,
@@ -181,12 +183,14 @@ aug = naw.WordEmbsAug(
 
 # Original sentence
 firstpar = text.split("\n\n")[1]
-sentences = to_sentences(firstpar)
+sentences = [' '.join(x) for x in to_sentences(firstpar)]
+print(sentences)
 
 # Generate multiple sentence variations
+# Not a big enough corpus for this to work really well.
 for sentence in sentences:
     variation_list = aug.augment(sentence, n=5)
-    print(f"\nOriginal: {' '.join(sentence)}")
+    print(f"\nOriginal: {sentence}")
     for variant in variation_list:
         print(variant)
-    print("------------------------\n")
+    print("\n------------------------\n")
