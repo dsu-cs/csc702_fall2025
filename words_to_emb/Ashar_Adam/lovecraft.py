@@ -31,6 +31,7 @@ random.seed(SEED)
 
 RAW_PATH = DATA / "lovecraft.txt"
 MODEL_PATH = MODELS / "lovecraft.w2v"
+W2V_PATH = MODELS / "lovecraft.txt"
 TSNE_PNG = OUT / "embedding_tsne.png"
 TSV_EMB = OUT / "lovecraft_embeddings.tsv"
 TSV_META = OUT / "lovecraft_metadata.tsv"
@@ -155,3 +156,37 @@ def plot_neighbors(neighbors):  # Plot neighbors using seaborn as a scatterplot
         plt.savefig(OUT / ("neighbors_%s.png" % word))
 
 plot_neighbors(nbrs)
+
+
+import nlpaug.augmenter.word as naw
+from nltk.corpus import stopwords
+import nltk
+
+nltk.download('stopwords')
+stopwords_list = stopwords.words('english')
+
+#model.wv.save_word2vec_format(W2V_PATH, binary=False)
+
+#Keep getting an error here:     raise EOFError("unexpected end of input; is count incorrect or file otherwise damaged?")
+#models/lovecraft.txt looks fine to me.
+aug = naw.WordEmbsAug(
+    model_type='word2vec',
+    model_path=W2V_PATH,
+    action="substitute",  # or "insert"
+    stopwords=stopwords_list,
+    aug_p=0.3,            # percentage of words to augment
+    aug_min=1,            # minimum number of words to augment per sentence
+    aug_max=3             # maximum number of words to augment per sentence
+)
+
+# Original sentence
+firstpar = text.split("\n\n")[1]
+sentences = to_sentences(firstpar)
+
+# Generate multiple sentence variations
+for sentence in sentences:
+    variation_list = aug.augment(sentence, n=5)
+    print(f"\nOriginal: {' '.join(sentence)}")
+    for variant in variation_list:
+        print(variant)
+    print("------------------------\n")
