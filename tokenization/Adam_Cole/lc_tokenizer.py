@@ -13,7 +13,6 @@ if not Path("saved_tokenizers/lovecraft-vocab.json").exists():
     #tokenizer.train(["../../words_to_emb/Ashar_Adam/data/lovecraft.txt"])
     Path("saved_tokenizers").mkdir(parents=True, exist_ok=True)
 
-    # Saves its work in lovecraft-merges.txt, which is fun.
     tokenizer.save("saved_tokenizers/lovecraft-vocab.json")
 else:
     ...
