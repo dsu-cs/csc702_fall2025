@@ -1,5 +1,6 @@
 from tokenizers import Tokenizer
 from tokenizers.models import BPE
+from tokenizers.models import WordPiece
 from tokenizers.trainers import BpeTrainer
 from pathlib import Path
 
@@ -60,4 +61,29 @@ very cheap restaurants it is different; there, the same trouble
 is not taken over the food, and it is just forked out of the pan 
 and flung on to a plate, without handling. Roughly speaking, 
 the more one pays for food, the more sweat and spittle one is obliged to eat with it.""".replace("\n", " "))
+print(enc.n_sequences, enc.ids, enc.tokens, end="\n\n")
+
+
+# Word Piece Tokenizer
+
+if not Path("saved_tokenizers/lovecraft-WPvocab.json").exists():
+    WPTokenizer = Tokenizer(WordPiece(unk_token="[UNK]"))
+    with open("../../words_to_emb/Ashar_Adam/data/lovecraft.txt", "r", encoding="utf-8") as f:
+            WPTokenizer.train_from_iterator(f)
+    WPTokenizer.save("saved_tokenizers/lovecraft-WPvocab.json")
+else:
+    ...
+    WPTokenizer = Tokenizer.from_file("saved_tokenizers/lovecraft-WPvocab.json")
+
+print("Word Piece Tokenizer:\n")
+# Not common enough to have its own token, but "goth" is.
+enc = WPTokenizer.encode("Shoggoth")
+print(enc.n_sequences, enc.ids, enc.tokens, end="\n\n")
+
+# Common enough to have its own token.
+enc = WPTokenizer.encode("Cthulhu")
+print(enc.n_sequences, enc.ids, enc.tokens, end="\n\n")
+
+# The whole sentence wasn't working, not sure why
+enc = WPTokenizer.encode("It is a truth universally acknowledged")
 print(enc.n_sequences, enc.ids, enc.tokens, end="\n\n")
