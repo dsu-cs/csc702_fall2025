@@ -3,7 +3,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import sentencepiece as spm
-from torchtext.vocab import GloVe
 from torch.utils.data import Dataset, DataLoader
 
 # ----------------------------
@@ -25,7 +24,7 @@ def read_text_files(dir_path: str):
 # ----------------------------
 # 2) Train SentencePiece BPE
 # ----------------------------
-def train_bpe(all_texts, model_prefix="bpe", vocab_size=16000):
+def train_bpe(all_texts, model_prefix="bpe", vocab_size=8000):
     combined_file = f"{model_prefix}_combined.txt"
     with open(combined_file, "w", encoding="utf-8") as f:
         for t in all_texts:
@@ -43,223 +42,258 @@ def train_bpe(all_texts, model_prefix="bpe", vocab_size=16000):
     return sp
 
 # ----------------------------
-# 3) Load GloVe embeddings
+# 3) Encode sentences -> token IDs
 # ----------------------------
-def load_glove(dim=100):
-    print("Loading pretrained GloVe embeddings...")
-    vectors = GloVe(name="6B", dim=dim)
-    return vectors
+def encode_sentence(sentence, sp, add_bos=False, add_eos=False):
+    ids = sp.encode(sentence, out_type=int)
+    if add_bos:
+        ids = [sp.bos_id()] + ids
+    if add_eos:
+        ids = ids + [sp.eos_id()]
+    return ids
 
 # ----------------------------
-# 4) Convert sentence -> embeddings tensor
-# ----------------------------
-def sentence_to_embeddings(sentence, tokenizer, embeddings):
-    tokens = tokenizer.encode(sentence, out_type=str)
-    vectors = []
-    for tok in tokens:
-        if tok in embeddings.stoi:
-            vectors.append(embeddings[tok])
-    if not vectors:
-        return torch.zeros((1, embeddings.dim))
-    return torch.stack(vectors)
-
-# ----------------------------
-# 5) Dataset + DataLoader
+# 4) Dataset + DataLoader (ID tensors)
 # ----------------------------
 class ParallelTextDataset(Dataset):
-    def __init__(self, modern_sentences, shake_sentences, tokenizer, embeddings):
+    def __init__(self, modern_sentences, shake_sentences, sp):
         assert len(modern_sentences) == len(shake_sentences), "Parallel corpora must be aligned!"
         self.modern = modern_sentences
         self.shake = shake_sentences
-        self.tokenizer = tokenizer
-        self.embeddings = embeddings
+        self.sp = sp
 
     def __len__(self):
         return len(self.modern)
 
     def __getitem__(self, idx):
-        src_emb = sentence_to_embeddings(self.modern[idx], self.tokenizer, self.embeddings)
-        tgt_emb = sentence_to_embeddings(self.shake[idx], self.tokenizer, self.embeddings)
-        return src_emb, tgt_emb
+        # Encoder input: no BOS; Decoder input: BOS + target; Target: target + EOS
+        src_ids = encode_sentence(self.modern[idx], self.sp, add_bos=False, add_eos=True)
+        tgt_in_ids = encode_sentence(self.shake[idx], self.sp, add_bos=True, add_eos=False)
+        tgt_out_ids = encode_sentence(self.shake[idx], self.sp, add_bos=False, add_eos=True)
+        return torch.tensor(src_ids, dtype=torch.long), torch.tensor(tgt_in_ids, dtype=torch.long), torch.tensor(tgt_out_ids, dtype=torch.long)
+
+def pad_sequence(seqs, pad_id):
+    max_len = max(s.size(0) for s in seqs)
+    out = torch.full((len(seqs), max_len), pad_id, dtype=torch.long)
+    for i, s in enumerate(seqs):
+        out[i, :s.size(0)] = s
+    return out
 
 def collate_fn(batch):
-    src_batch, tgt_batch = zip(*batch)
-    src_lengths = [s.size(0) for s in src_batch]
-    tgt_lengths = [t.size(0) for t in tgt_batch]
-    max_src_len = max(src_lengths)
-    max_tgt_len = max(tgt_lengths)
-
-    src_padded = torch.zeros(len(batch), max_src_len, src_batch[0].size(1))
-    tgt_padded = torch.zeros(len(batch), max_tgt_len, tgt_batch[0].size(1))
-    for i, (s, t) in enumerate(zip(src_batch, tgt_batch)):
-        src_padded[i, :s.size(0), :] = s
-        tgt_padded[i, :t.size(0), :] = t
-
-    return src_padded, tgt_padded
+    # batch: list of (src_ids, tgt_in_ids, tgt_out_ids)
+    pad_id = 1
+    src_list, tgt_in_list, tgt_out_list = zip(*batch)
+    src = pad_sequence(src_list, pad_id)
+    tgt_in = pad_sequence(tgt_in_list, pad_id)
+    tgt_out = pad_sequence(tgt_out_list, pad_id)
+    return src, tgt_in, tgt_out
 
 # ----------------------------
-# 6) Seq2Seq Model
+# 5) Seq2Seq Model (token IDs)
 # ----------------------------
 class Encoder(nn.Module):
-    def __init__(self, input_dim, hidden_dim, num_layers=1):
+    def __init__(self, vocab_size, emb_dim, hidden_dim, pad_id, num_layers=1, dropout=0.1):
         super().__init__()
-        self.rnn = nn.GRU(input_dim, hidden_dim, num_layers=num_layers, batch_first=True, bidirectional=True)
+        self.embedding = nn.Embedding(vocab_size, emb_dim, padding_idx=pad_id)
+        self.rnn = nn.GRU(emb_dim, hidden_dim, num_layers=num_layers, batch_first=True, bidirectional=True)
+        self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x):
-        outputs, hidden = self.rnn(x)
-        outputs = outputs[:, :, :hidden.size(2)//2] + outputs[:, :, hidden.size(2)//2:]
+    def forward(self, src_ids):
+        # src_ids: [B, Ls]
+        emb = self.dropout(self.embedding(src_ids))        # [B, Ls, E]
+        outputs, hidden = self.rnn(emb)                    # outputs: [B, Ls, 2H], hidden: [2*L, B, H]
+        # merge bi-directional features
+        H = outputs.size(2) // 2
+        outputs = outputs[:, :, :H] + outputs[:, :, H:]    # [B, Ls, H]
+        # merge last-layer fwd/bwd hidden to one layer
+        L2, B, Hh = hidden.size()                          # L2=2*num_layers
+        hidden = hidden[0:L2:2] + hidden[1:L2:2]           # [num_layers, B, H]
         return outputs, hidden
 
 class Attention(nn.Module):
-    def __init__(self, enc_hidden_dim, dec_hidden_dim):
+    def __init__(self, hidden_dim):
         super().__init__()
-        self.attn = nn.Linear(enc_hidden_dim + dec_hidden_dim, dec_hidden_dim)
-        self.v = nn.Linear(dec_hidden_dim, 1, bias=False)
+        self.attn = nn.Linear(hidden_dim * 2, hidden_dim)
+        self.v = nn.Linear(hidden_dim, 1, bias=False)
 
-    def forward(self, hidden, encoder_outputs):
-        src_len = encoder_outputs.size(1)
-        hidden = hidden.unsqueeze(1).repeat(1, src_len, 1)
-        energy = torch.tanh(self.attn(torch.cat((hidden, encoder_outputs), dim=2)))
-        attention = self.v(energy).squeeze(2)
-        return F.softmax(attention, dim=1)
+    def forward(self, dec_hidden, enc_outputs):
+        # dec_hidden: [B, H]; enc_outputs: [B, Ls, H]
+        B, Ls, H = enc_outputs.shape
+        dec = dec_hidden.unsqueeze(1).repeat(1, Ls, 1)     # [B, Ls, H]
+        energy = torch.tanh(self.attn(torch.cat([dec, enc_outputs], dim=2)))  # [B, Ls, H]
+        scores = self.v(energy).squeeze(2)                 # [B, Ls]
+        attn = F.softmax(scores, dim=1)                    # [B, Ls]
+        return attn
 
 class Decoder(nn.Module):
-    def __init__(self, input_dim, hidden_dim, output_dim, attention):
+    def __init__(self, vocab_size, emb_dim, hidden_dim, pad_id, attention, num_layers=1, dropout=0.1):
         super().__init__()
+        self.embedding = nn.Embedding(vocab_size, emb_dim, padding_idx=pad_id)
         self.attention = attention
-        self.rnn = nn.GRU(input_dim + hidden_dim, hidden_dim, batch_first=True)
-        self.fc = nn.Linear(hidden_dim*2, output_dim)
+        self.rnn = nn.GRU(emb_dim + hidden_dim, hidden_dim, num_layers=num_layers, batch_first=True)
+        self.fc_out = nn.Linear(hidden_dim * 2, vocab_size)
+        self.dropout = nn.Dropout(dropout)
 
-    def forward(self, input_step, hidden, encoder_outputs):
-        attn_weights = self.attention(hidden.squeeze(0), encoder_outputs)
-        attn_weights = attn_weights.unsqueeze(1)
-        context = torch.bmm(attn_weights, encoder_outputs)
-        rnn_input = torch.cat((input_step, context), dim=2)
-        output, hidden = self.rnn(rnn_input, hidden)
-        output = torch.cat((output, context), dim=2)
-        output = self.fc(output)
-        return output, hidden, attn_weights
+    def forward(self, input_token, hidden, enc_outputs):
+        # input_token: [B] next decoder token id
+        emb = self.dropout(self.embedding(input_token)).unsqueeze(1)  # [B, 1, E]
+        # attention over encoder outputs
+        dec_hidden_last = hidden[-1]                                   # [B, H]
+        attn_weights = self.attention(dec_hidden_last, enc_outputs)    # [B, Ls]
+        context = torch.bmm(attn_weights.unsqueeze(1), enc_outputs)    # [B, 1, H]
+        rnn_in = torch.cat([emb, context], dim=2)                      # [B, 1, E+H]
+        output, hidden = self.rnn(rnn_in, hidden)                      # output: [B,1,H]
+        logits = self.fc_out(torch.cat([output, context], dim=2)).squeeze(1)  # [B, V]
+        return logits, hidden, attn_weights
 
 class Seq2Seq(nn.Module):
-    def __init__(self, encoder, decoder):
+    def __init__(self, encoder, decoder, pad_id, bos_id, eos_id):
         super().__init__()
         self.encoder = encoder
         self.decoder = decoder
+        self.pad_id = pad_id
+        self.bos_id = bos_id
+        self.eos_id = eos_id
 
-    def forward(self, src, tgt, teacher_forcing_ratio=0.5):
-        batch_size, tgt_len, _ = tgt.size()
-        outputs = torch.zeros(batch_size, tgt_len, tgt.size(2), device=src.device)
+    def forward(self, src_ids, tgt_in_ids, tgt_out_ids, teacher_forcing_ratio=0.5):
+        """
+        src_ids:    [B, Ls]
+        tgt_in_ids: [B, Lt]   (input side, with BOS at start)
+        tgt_out_ids:[B, Lt]   (output side, with EOS at end)
+        """
+        B, Lt = tgt_out_ids.shape
+        enc_outputs, hidden = self.encoder(src_ids)
 
-        encoder_outputs, hidden = self.encoder(src)
-        hidden = hidden[:1]
+        logits_seq = []
+        inp = tgt_in_ids[:, 0]  # first BOS token
 
-        input_step = tgt[:, 0, :].unsqueeze(1)
-        for t in range(tgt_len):
-            output, hidden, attn = self.decoder(input_step, hidden, encoder_outputs)
-            outputs[:, t, :] = output.squeeze(1)
-            teacher_force = torch.rand(1).item() < teacher_forcing_ratio
-            if t+1 < tgt_len:
-                input_step = tgt[:, t+1, :].unsqueeze(1) if teacher_force else output
-        return outputs
+        for t in range(Lt):
+            logits, hidden, _ = self.decoder(inp, hidden, enc_outputs)  # [B, V]
+            logits_seq.append(logits.unsqueeze(1))
+            teacher = (torch.rand(1).item() < teacher_forcing_ratio)
+            if t + 1 < Lt:
+                inp = tgt_in_ids[:, t+1] if teacher else logits.argmax(dim=1)
+
+        return torch.cat(logits_seq, dim=1)  # [B, Lt, V]
+
+    @torch.no_grad()
+    def translate(self, src_ids, max_len=60):
+        """
+        Greedy decoding until EOS.
+        src_ids: [B, Ls]
+        """
+        self.eval()
+        enc_outputs, hidden = self.encoder(src_ids)
+        B = src_ids.size(0)
+        inp = torch.full((B,), self.bos_id, dtype=torch.long, device=src_ids.device)
+
+        outputs = []
+        for _ in range(max_len):
+            logits, hidden, _ = self.decoder(inp, hidden, enc_outputs)
+            next_ids = logits.argmax(dim=1)  # greedy next token
+            outputs.append(next_ids)
+            inp = next_ids
+            if torch.all(next_ids == self.eos_id):
+                break
+
+        if len(outputs) == 0:
+            return torch.empty((B, 0), dtype=torch.long, device=src_ids.device)
+        return torch.stack(outputs, dim=1)  # [B, T]
+
+
+
 
 # ----------------------------
-# 7) Training Loop
+# 6) Training Loop
 # ----------------------------
-def train_model(model, dataloader, epochs=5, lr=1e-3, device=None):
-    device = device or ('cuda' if torch.cuda.is_available() else 'cpu')
+def train_model(model, dataloader, sp, epochs=5, lr=1e-3, device=None):
+    device = device or ('mps' if torch.backends.mps.is_available() else 'cpu')
     model.to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-    criterion = nn.MSELoss()
+    pad_id = sp.pad_id()
+    criterion = nn.CrossEntropyLoss(ignore_index=pad_id)
 
     model.train()
     for epoch in range(1, epochs+1):
-        epoch_loss = 0
-        for src_batch, tgt_batch in dataloader:
-            src_batch, tgt_batch = src_batch.to(device), tgt_batch.to(device)
+        epoch_loss = 0.0
+        for src, tgt_in, tgt_out in dataloader:
+            src, tgt_in, tgt_out = src.to(device), tgt_in.to(device), tgt_out.to(device)
             optimizer.zero_grad()
-            output = model(src_batch, tgt_batch)
-            loss = criterion(output, tgt_batch)
+            logits = model(src, tgt_in, tgt_out, teacher_forcing_ratio=0.5)  # [B, Lt, V]
+
+            B, Lt, V = logits.shape
+            loss = criterion(logits.reshape(B*Lt, V), tgt_out.reshape(B*Lt))
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             optimizer.step()
             epoch_loss += loss.item()
         print(f"Epoch {epoch}/{epochs}, Loss: {epoch_loss/len(dataloader):.4f}")
     print("Training complete.")
 
+
 # ----------------------------
-# 8) Inference
+# 7) Inference Helper
 # ----------------------------
-def translate_sentence(model, sentence, tokenizer, embeddings, max_len=50, device=None):
+@torch.no_grad()
+def translate_sentence(model, sentence, sp, device=None, max_len=60):
     device = device or ('cuda' if torch.cuda.is_available() else 'cpu')
     model.eval()
-    with torch.no_grad():
-        src = sentence_to_embeddings(sentence, tokenizer, embeddings).unsqueeze(0).to(device)
-        encoder_outputs, hidden = model.encoder(src)
-        hidden = hidden[:1]
-        input_step = src[:, 0, :].unsqueeze(1)
-        outputs = []
-        for _ in range(max_len):
-            output, hidden, attn = model.decoder(input_step, hidden, encoder_outputs)
-            outputs.append(output.squeeze(1).cpu())
-            input_step = output
-        return outputs
+    # encode src with EOS
+    src_ids = encode_sentence(sentence, sp, add_bos=False, add_eos=True)
+    src = torch.tensor(src_ids, dtype=torch.long).unsqueeze(0).to(device)
+    pred_ids = model.translate(src, max_len=max_len)  # [1, T]
+    # strip everything after EOS
+    ids = pred_ids.squeeze(0).tolist()
+    if sp.eos_id() in ids:
+        ids = ids[:ids.index(sp.eos_id())]
+    # decode subwords
+    return sp.decode(ids)
 
 # ----------------------------
-# 9) Embeddings → Tokens → Text
+# 8) Main
 # ----------------------------
-def embeddings_to_tokens(pred_embeddings, glove, top_k=1):
-    if isinstance(pred_embeddings, list):
-        pred_embeddings = torch.stack(pred_embeddings)
-    tokens = []
-    pred_norm = F.normalize(pred_embeddings, dim=1)
-    vocab_norm = F.normalize(glove.vectors, dim=1)
-    for vec in pred_norm:
-        cos_sim = torch.matmul(vocab_norm, vec)
-        top_idx = torch.topk(cos_sim, top_k).indices[0].item()
-        token = glove.itos[top_idx]
-        tokens.append(token)
-    return tokens
+def main(modern_dir="data/modern", shake_dir="data/shakespeare",
+         batch_size=32, epochs=5, retrain=False, vocab_size=8000, emb_dim=256, hidden_dim=256):
 
-def tokens_to_text(tokens, tokenizer):
-    return tokenizer.decode(tokens)
-
-# ----------------------------
-# 10) Main function
-# ----------------------------
-def main(modern_dir="data/modern", shake_dir="data/shakespeare", batch_size=16, epochs=5):
     modern_texts = read_text_files(modern_dir)
-    shake_texts = read_text_files(shake_dir)
+    shake_texts  = read_text_files(shake_dir)
     all_texts = modern_texts + shake_texts
-
     if not all_texts:
         raise RuntimeError("No text files found in modern/ or shakespeare/")
 
-    sp = train_bpe(all_texts)
-    glove = load_glove()
-    dataset = ParallelTextDataset(modern_texts, shake_texts, sp, glove)
+    sp = train_bpe(all_texts, vocab_size=vocab_size)
+    pad_id, bos_id, eos_id = sp.pad_id(), sp.bos_id(), sp.eos_id()
+    vocab_size = sp.get_piece_size()
+
+    dataset = ParallelTextDataset(modern_texts, shake_texts, sp)
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
 
-    input_dim = glove.dim
-    hidden_dim = 256
-    enc = Encoder(input_dim, hidden_dim)
-    attn = Attention(hidden_dim, hidden_dim)
-    dec = Decoder(input_dim, hidden_dim, input_dim, attn)
-    model = Seq2Seq(enc, dec)
+    enc = Encoder(vocab_size=vocab_size, emb_dim=emb_dim, hidden_dim=hidden_dim, pad_id=pad_id)
+    attn = Attention(hidden_dim)
+    dec = Decoder(vocab_size=vocab_size, emb_dim=emb_dim, hidden_dim=hidden_dim, pad_id=pad_id, attention=attn)
+    model = Seq2Seq(enc, dec, pad_id=pad_id, bos_id=bos_id, eos_id=eos_id)
 
-    print("Starting training...")
-    train_model(model, dataloader, epochs=epochs)
+    ckpt = "shakespeare_model.pth"
+    if (not retrain) and os.path.exists(ckpt):
+        model.load_state_dict(torch.load(ckpt, map_location="cpu"))
+        model.eval()
+        print(f"Loaded pretrained model from {ckpt}")
+    else:
+        print("Starting training...")
+        train_model(model, dataloader, sp, epochs=epochs)
+        torch.save(model.state_dict(), ckpt)
+        print(f"Model saved to {ckpt}")
 
     # Demo inference
     example_sentence = "Where are you going?"
-    output_embeddings = translate_sentence(model, example_sentence, sp, glove)
-    pred_tokens = embeddings_to_tokens(output_embeddings, glove)
-    pred_text = tokens_to_text(pred_tokens, sp)
-
+    pred_text = translate_sentence(model, example_sentence, sp)
     print("Original:", example_sentence)
     print("Predicted Shakespearean:", pred_text)
-    return sp, glove, dataloader, model
+
+    return sp, dataloader, model
 
 # ----------------------------
-# 11) CLI
+# 9) CLI
 # ----------------------------
 if __name__ == "__main__":
-    sp, glove, dataloader, model = main()
+    sp, dataloader, model = main()
