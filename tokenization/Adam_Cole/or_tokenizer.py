@@ -1,5 +1,11 @@
 import httpx
+from itertools import chain
 from pathlib import Path
+
+from tokenizers import Tokenizer
+from tokenizers.models import BPE
+from tokenizers.trainers import BpeTrainer
+
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data"
@@ -44,3 +50,45 @@ THE END
     
     with open(path, "w", encoding="utf-8") as f:
         f.write(text)
+
+
+if not Path("saved_tokenizers/orwell-vocab.json").exists():
+    tokenizer = Tokenizer(BPE())
+    
+    files = []
+    for file in DATA.glob("*.txt"):
+        files.append(open(file, "r", encoding="utf-8"))
+    tokenizer.train_from_iterator(chain(*files))
+
+    Path("saved_tokenizers").mkdir(parents=True, exist_ok=True)
+
+    tokenizer.save("saved_tokenizers/orwell-vocab.json")
+else:
+    tokenizer = Tokenizer.from_file("saved_tokenizers/orwell-vocab.json")
+
+
+# Not common enough to have its own token, but "goth" is.
+enc = tokenizer.encode("Shoggoth")
+print(enc.n_sequences, enc.ids, enc.tokens, end="\n\n")
+
+# Common enough to have its own token.
+enc = tokenizer.encode("Cthulhu")
+print(enc.n_sequences, enc.ids, enc.tokens, end="\n\n")
+
+
+enc = tokenizer.encode("It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.")
+print(enc.n_sequences, enc.ids, enc.tokens, end="\n\n")
+
+# Something slightly longer, from one of H.P.'s penpals.
+enc = tokenizer.encode("Hither came Conan, the Cimmerian, black-haired, sullen-eyed, sword in hand, a thief, a reaver, a slayer, with gigantic melancholies and gigantic mirth, to tread the jeweled thrones of the Earth under his sandalled feet")
+print(enc.n_sequences, enc.ids, enc.tokens, end="\n\n")
+
+# Longer. Lovecraft (_The Cats of Ulthar_)
+enc = tokenizer.encode("""It is said that in Ulthar, which lies beyond the river Skai, no man may kill a cat; and this I can 
+verily believe as I gaze upon him who sitteth purring before the fire. For the cat is cryptic, and 
+close to strange things which men cannot see. He is the soul of antique Aegyptus, and bearer 
+of tales from forgotten cities in Meroé and Ophir. He is the kin of the jungle’s lords, and heir to 
+the secrets of hoary and sinister Africa. The Sphinx is his cousin, and he speaks her 
+language; but he is more ancient than the Sphinx, and remembers that which she hath 
+forgotten.""")
+print(enc.n_sequences, enc.ids, enc.tokens, end="\n\n")

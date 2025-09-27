@@ -53,7 +53,8 @@ def ensure_deps():
         import subprocess
         subprocess.check_call([sys.executable, "-m", "pip", "install", *missing])
 
-ensure_deps()
+#In my setup has trouble recognizing scikit-learn, so commenting out auto install --adam
+#ensure_deps()
 
 # Now safely import
 from tqdm import tqdm
