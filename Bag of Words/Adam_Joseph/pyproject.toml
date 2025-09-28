@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "beautifulsoup4>=4.14.0",
     "fasttext>=0.9.3",
     "nltk>=3.9.1",
     "numpy>=2.3.3",
