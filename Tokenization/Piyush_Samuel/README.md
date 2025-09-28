@@ -1,2 +1,0 @@
-### Overview
-For this assignment, we created a simple script that used the BPETokenizer package from bpetokenizer to create tokens for two different wiki articles to compare them. We were able to pull the wiki articles using the wikipedia package and the two articles chosen were for South Dakota and North Dakota. We were curious to see what byte pair encoding tokens would result from the two different texts, so we compared the 20 longest tokens generated from each article.
