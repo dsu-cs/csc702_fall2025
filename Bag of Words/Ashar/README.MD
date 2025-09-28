@@ -22,30 +22,41 @@ t3.txt
 
 Each ".txt" file is treated as a document. The subfolder name is used as the **class label**.
 
+
 to run the script, python BowEmbeddings.py --data-dir ./data --embed-dims 100 --plot --save
 
 # Arguments
 
 --data-dir : Path to dataset folder (default: ./data).
+
 --embed-dims : Embedding dimensionality (auto-adjusts if dataset is too small).
+
 --plot : Show t-SNE visualization of embeddings.
+
 --save : Save embeddings to CSV (lsa100_embeddings.csv, nmf100_embeddings.csv, etc.).
+
 --no-autoencoder : Skip autoencoder step if PyTorch is not available.
 
 # Output
 
 ## Console Results
+
 Accuracy from Logistic Regression (cross-validation) for:
+
 TF-IDF (baseline)
+
 LSA embeddings
+
 NMF embeddings
 
 ## Autoencoder embeddings 
 
 Plots (--plot)
+
 2D scatterplots of embeddings via t-SNE, colored by class.
 
 ## CSV Files (--save)
+
 Embedding vectors saved in files like:
 
 lsa50_embeddings.csv
