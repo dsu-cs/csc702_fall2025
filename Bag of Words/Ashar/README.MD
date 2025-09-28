@@ -4,20 +4,34 @@ This project demonstrates how to transform sparse ** Bag of Words (BoW) ** into 
 visualizes them.
 
 BowEmbeddings.Py # Main script
+
 README
+
 data/ # Dataset folder
-sports/ 
+
+## sports/ 
+
 s1.txt
+
 s2.txt
+
 s3.txt
-politics/
+## politics/
+
 p1.txt
+
 p2.txt
+
 p3.txt
-tech/
+
+## tech/
+
 t1.txt
+
 t2.txt
+
 t3.txt
+
 '''
 
 Each ".txt" file is treated as a document. The subfolder name is used as the **class label**.
