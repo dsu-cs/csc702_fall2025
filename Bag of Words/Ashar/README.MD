@@ -49,7 +49,9 @@ Plots (--plot)
 Embedding vectors saved in files like:
 
 lsa50_embeddings.csv
+
 nmf50_embeddings.csv
+
 ae50_embeddings.csv
 
 
