@@ -1,0 +1,3 @@
+This code takes all the word embeddings, reads them in, and plays the "blob" with them.
+It starts with 2 random words determined by the seed value you specify
+It then checks the similarity of the next word is to the 2 starter blobs, and puts it in the blob with the closest similarity. It only checks the similarity of the most recent word added, not all the words in the blob. Watching it run it usually ends up relatively even, with 1 blob winning by about 50 words usually. I want to add more visualization to it but I am not sure how to go about doing that.
