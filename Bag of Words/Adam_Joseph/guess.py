@@ -2,7 +2,10 @@
 from pathlib import Path
 import httpx
 from bs4 import BeautifulSoup
-
+import pandas as pd
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import CountVectorizer
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data"
@@ -70,6 +73,9 @@ def get_orwell_text():
         path = DATA / f"{title.lower().replace(' ', '_')}.txt"
         if path.exists():
             print(f"[data] {title} already exists, skipping download.")
+            with open(path, "r", encoding="utf-8") as f:
+                text = f.read()
+                train += text + "\n\n"
             continue
         print(f"[data] Downloading {title} from {GUTENBERG_AU_BASE_URL + url}")
         response = httpx.get(GUTENBERG_AU_BASE_URL + url)
@@ -115,12 +121,13 @@ THE END
         html = response.text
         soup = BeautifulSoup(html, "html.parser")
         #Get the text inside the div with class "entry-content", except the first element
-        content_div = soup.find("div", class_="entry-content")
+        content_div = soup.find("section", class_="entry-content")
         paragraphs = content_div.find_all("p")[1:]
         text = "\n\n".join([p.get_text() for p in paragraphs])
         test.append((title, text))
         with open(path, "w", encoding="utf-8") as f:
             f.write(text)
+    return train, test
 
 def get_chesterton_text():
     books = {
@@ -180,8 +187,44 @@ def get_chesterton_text():
             f.write(text)
     return train, test
 
+def build_vocab(*text):
+    cv = CountVectorizer(stop_words='english', max_features=5000)
+    counts = cv.fit_transform(text)
+    df_counts = pd.DataFrame(counts.toarray(), columns=cv.get_feature_names_out())
+    print(df_counts.head())
+    return df_counts
+
+def guess_author(vocab, *texts):
+    cv = CountVectorizer(vocabulary=vocab.columns.tolist())
+    counts = cv.fit_transform(texts)
+    df_counts = pd.DataFrame(counts.toarray(), columns=cv.get_feature_names_out())
+    #print(df_counts.head())
+    similarities = cosine_similarity(vocab, df_counts)
+    #print(similarities)
+    return similarities
+
 if __name__ == "__main__":
-    lovecraft_train, lovecraft_test = get_lovecraft_text(force_download=False)
+    lovecraft_train, lovecraft_test = get_lovecraft_text()
     orwell_train, orwell_test = get_orwell_text()
     chesterton_train, chesterton_test = get_chesterton_text()
-    
+    vocab = build_vocab(lovecraft_train, orwell_train, chesterton_train)
+    print(f"Vocab size: {len(vocab)}")
+    print(vocab)
+
+    print("LOVECRAFT TEST")
+    print("(similarities: [lovecraft, orwell, chesterton])")
+    for title, text in lovecraft_test:
+        sims = guess_author(vocab, text)
+        print(f"{title}: {sims}")
+
+    print("\nORWELL TEST")
+    print("(similarities: [lovecraft, orwell, chesterton])")
+    for title, text in orwell_test:
+        sims = guess_author(vocab, text)
+        print(f"{title}: {sims}")
+
+    print("\nCHESTERTON TEST")
+    print("(similarities: [lovecraft, orwell, chesterton])")
+    for title, text in chesterton_test:
+        sims = guess_author(vocab, text)
+        print(f"{title}: {sims}")
