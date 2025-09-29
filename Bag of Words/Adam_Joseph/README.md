@@ -65,3 +65,7 @@ A Defence of Rash Vows: [[0.37640904]
  [0.34602045]
  [0.50630658]]
  ```
+## BagOfWords.ipynb
+This is a seperate project idea that is not done.
+
+Plan: For this project, I am attempting to generate a list of Siamese CBOW sentence embeddings, and then given the list of word embeddings attempt to find the words that created the sentence embedding. The plan is to compare the runtime of a brute force approach to finding the embeddings vs a dynamic programming strategy. As I'm writing this, I am realizing I have design problems. Do I do a simple set or multiset for my sentence bags of words? How long should I allow each sentence to be? How much memory is needed to create my dynamic program? Unfortunately, right now I am out of time for this. 
