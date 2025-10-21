@@ -8,7 +8,7 @@ It implements Transformer encoder from the ground up using only PyTorch, applyin
 - Implement transformer encode architecture
 - Trains completely from scratch
 - Process data locally
-- evaluates modle performance
+- Evaluates model performance
 
 This code is to prove that transformers are powerfull without pretraining and that self-attention and positional encoding alone can affectivly capture contextual relationships
 in text and perform meaninful classification
