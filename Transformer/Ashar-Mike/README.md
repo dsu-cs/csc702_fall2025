@@ -29,6 +29,7 @@ It’s a proof-of-concept that bridges the gap between theory i.e "Transformer m
 ## To Exectue 
 ```
 python train.py --epochs 1 --d_model 64 --nlayers 1
+Note: parameters are optional and application will use default values if not included.
 ```
 ## Output
 
@@ -36,4 +37,4 @@ python train.py --epochs 1 --d_model 64 --nlayers 1
 
 ## Modifications
 The only Hyper Parameters that made much difference were increasing the epochs or the number of heads.  We were able to get to 92% accuracy with 6 epochs and 16 heads.
-Other modifications did not make much more accuracy.
+Other modifications did not increase the accuracy.
