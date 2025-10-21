@@ -33,3 +33,7 @@ python train.py --epochs 1 --d_model 64 --nlayers 1
 ## Output
 
 <img width="1238" height="707" alt="image" src="https://github.com/user-attachments/assets/88e526ef-a27c-4019-9d2a-d3e9dad0def4" />
+
+## Modifications
+The only Hyper Parameters that made much difference were increasing the epochs or the number of heads.  We were able to get to 92% accuracy with 6 epochs and 16 heads.
+Other modifications did not make much more accuracy.
