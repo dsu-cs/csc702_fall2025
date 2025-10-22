@@ -11,10 +11,6 @@
 
  Python environment (recommended Python 3.8+).
 
-```powershell
-py -3.13 -m pip install torch torchvision pandas scikit-learn matplotlib seaborn optuna datasets
-```
-
 ## Run training from notebook
 
 - Set `SUBSET = None` to use full dataset.
@@ -22,3 +18,5 @@ py -3.13 -m pip install torch torchvision pandas scikit-learn matplotlib seaborn
 
 ## Visualizing self-attention
 The notebook contains cells that capture attention weights.
+
+The project shows the attention weight a qeury recieves, visualizes per-layer self-attention For each layer and head, the visualization shows how a query token distributes its attention over the first 50 tokens of the input sequence.
