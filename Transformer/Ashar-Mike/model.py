@@ -1,11 +1,7 @@
 # model.py
 # Ashar and Mike
 """
-Model definitions for a vanilla Transformer (non‑LLM) text classifier.
-- Learnable token embeddings
-- Sinusoidal positional encoding
-- TransformerEncoder stack (PyTorch)
-- Mean pooling (mask‑aware) for classification head
+This is the Transformer model with Positional Encoding.
 """
 import math
 from typing import Optional
