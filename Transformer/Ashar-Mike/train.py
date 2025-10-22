@@ -4,7 +4,9 @@
 # ============================
 #Ashar and Mike
 """
-Training entrypoint for the non‑LLM Transformer text classifier.
+This module handles the training and drives the process.
+Each testing result will display and best result is captured in checkpoint.pt
+
 Usage example (CPU‑friendly):
 
 python train.py \
@@ -16,7 +18,6 @@ python train.py \
   --batch_size 128 \
   --lr 5e-4
 
-Each testing result will display and best result is captured in checkpoint.pt
 """
 import argparse
 import random
