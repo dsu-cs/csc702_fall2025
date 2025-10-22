@@ -15,6 +15,8 @@ python train.py \
   --ff 256 \
   --batch_size 128 \
   --lr 5e-4
+
+Each testing result will display and best result is captured in checkpoint.pt
 """
 import argparse
 import random
@@ -79,7 +81,7 @@ def evaluate(model, loader, criterion):
             n += bsz
     return running_loss / n, running_acc / n
 
-
+# Main driver routine.  Parameters can be passed in, all parameters have default values
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--epochs', type=int, default=5)
@@ -122,7 +124,6 @@ def main():
 
     best_acc = 0.0
     for epoch in range(1, args.epochs + 1):
-        # Use a single-line f-string to avoid accidental newline breakage in some editors
         print(f"Epoch {epoch}/{args.epochs}")
         tr_loss, tr_acc = train_epoch(model, train_loader, criterion, optimizer, scheduler)
         te_loss, te_acc = evaluate(model, test_loader, criterion)
@@ -138,7 +139,6 @@ def main():
             print(f"Saved new best checkpoint to {args.save_path}")
 
     print(f"Best test acc: {best_acc:.4f}")
-
 
 if __name__ == '__main__':
     main()
