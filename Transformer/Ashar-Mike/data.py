@@ -1,6 +1,8 @@
 # data.py
 #Ashar And Mike
-#TorchText vesrion throwing error on windows envrioenmnet that is why used CSV data.
+# This module handles the file loading and tokenization
+
+#TorchText version throwing error on windows environment that is why used CSV data.
 """
 TorchText-free data loader for AG News classification.
 Downloads CSVs and builds a tiny vocab/tokenizer from scratch.
