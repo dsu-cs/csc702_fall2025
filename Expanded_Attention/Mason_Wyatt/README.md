@@ -17,3 +17,44 @@ Our bot is yet to be mated by Chess.com's Martin bot; however, that is in large 
 
 ### Extra files
 We have a number of other files that are not included in our submission to github, solely because of their size. These include our training data pulled from Lichess which is 46Gb and our encoded game tensors that were actually used for training.
+
+
+#####################
+
+This project involved branching off of a previous project. The following README information is from the new work: 
+
+#####################
+
+# Before submission, add any files you alter to this list, and point out where in those files you altered.
+
+Files worked on: README.md, model_with_extended_attention.ipynb, ...
+
+For the model_with_extended_attention.ipynb file, what I am attempting to do is recreate the prior decoder-only architecture while maintaining the ability for hyperparameter tuning in a similar way. Then have a later analysis/comparison to the baseline model trained and tested in the prior version that Wyatt worked on. More specifically, this architecture will be adjusted, trained, and compared to the prior version (baseline). This variation will have various 'upgrades' to the baseline architecture, addressing concerns revolving around the attention mechanism.
+
+I will attempt to add two different features to the decoder architecture: Quantization and Sparse Attention. This will aim to improve efficiency of the attention mechanisms. Hopefully accuracy/metrics will also improve by adding these features as well, or at the very least decrease time taken.
+
+I did this using the bitsandbytes library for Quantization. 
+
+The new ipynb file contains my notes and code, but especially notable is that you need a GPU for this. The code will then run through cells that do some imports, check versions of those imports, create our dataset, and then the good stuff!
+
+It then moves on to create sparse multihead attention self-attention layers with a sliding window to make the attention mechanism more efficient.
+
+Then, the SparseDecoderLayer throws these layers in with the rest of a decoder layer for the total sparse attention layer.
+
+Finally, this is put into the overall decoder. This is then quantized in 8-bits. This replaces the linear layers with quantized layers.
+
+Finally, an example cell trains with various quicker hyperparameters to test out. From here, we will now train the new architecture using the previous hyperparameters/setup as close as we can and compare the results!
+
+
+New Architecture Results:
+
+...
+
+
+
+New Architecture Analysis:
+
+...
+
+NOTE: Wyatt, make sure to read the notes in the code cells and especially to replace the old variables in the model training if you use that version. 
+ALSO: To actually play and test with this new architecture, things are named differently so note that.
