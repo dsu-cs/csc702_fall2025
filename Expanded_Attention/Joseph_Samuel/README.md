@@ -1,0 +1,5 @@
+# Transformer Chess Bot with Multi-Query Attention
+
+For this project, we are using the decoder-based chess bot that was created for the previous group work project. The chess bot uses encoded games that are pulled from a Lichess dataset, where each chess move is treated as a seperate token with its own unique integer id. The chess bot tries to predict the next move given all the previous moves of the game. For expanding the attention of our model, we implemented our own decoder layer class that uses multi-query attention. 
+
+Multi-query attention is an expansion approach that uses one set of key and value tensors across all heads in the layer. This means each head will have unique queries, but they will have the same keys and values when calculating attention. This method of attention aims to use less memory while decoding so we are able to take in bigger context windows. However, our chess bot does not have the issue of having a too small of a context window as our max sequence length is 200 moves, which is able to hold basically all chess games. This means we are expecting worse results with the model with multi-query attention.
