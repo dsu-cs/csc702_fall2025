@@ -9,7 +9,7 @@ It provides an end-to-end sentiment-classification pipeline for experimentation,
 
 ## Contents
 
-* **`IMDB_Transformer_Sentiment.ipynb`** – Complete Jupyter notebook containing:
+* IMDB_Transformer_Sentiment.ipynb – Complete Jupyter notebook containing:
 
   * Data loading and preprocessing
   * Regex tokenization and vocabulary creation
@@ -18,11 +18,11 @@ It provides an end-to-end sentiment-classification pipeline for experimentation,
   * Training and evaluation loops
   * Learning-rate scheduling, early stopping, and gradient clipping
   * Attention-map extraction and visualization
-* **`outputs/`** – Folder containing saved model weights and vocabulary:
+* outputs/ – Folder containing saved model weights and vocabulary:
 
-  * `best_model.pt` – Best validation checkpoint
-  * `vocab.json` – Serialized vocabulary dictionary
-* **`data/imdb_reviews.csv`** – CSV dataset (generated automatically or added manually)
+  * best_model.pt – Best validation checkpoint
+  * vocab.json – Serialized vocabulary dictionary
+* data/imdb_reviews.csv – CSV dataset (generated automatically or added manually)
 
 ---
 
@@ -34,7 +34,7 @@ Create and activate a Python environment (Python 3.8 or higher is recommended), 
 pip install torch torchvision torchaudio pandas scikit-learn matplotlib seaborn datasets
 ```
 
-Optional: if you use a `requirements.txt` file, install everything with:
+Optional: if you use a requirements.txt file, install everything with:
 
 ```bash
 pip install -r requirements.txt
@@ -54,14 +54,14 @@ You can either:
 
 ## Running the Notebook
 
-1. Open **`IMDB_Transformer_Sentiment.ipynb`** in Jupyter or VS Code.
-2. Adjust configuration parameters near the top (`SUBSET`, `MAX_LEN`, `EMBED_DIM`, `EPOCHS`, etc.).
+1. Open IMDB_Transformer_Sentiment.ipynb in Jupyter or VS Code.
+2. Adjust configuration parameters near the top (SUBSET, MAX_LEN, EMBED_DIM, EPOCHS, etc.).
 3. Run all cells sequentially.
 4. The notebook will:
 
    * Train a Transformer encoder model on IMDB reviews
    * Print training and validation metrics per epoch
-   * Save the best model and vocabulary to `./outputs/`
+   * Save the best model and vocabulary to ./outputs/
 
 ### Subsampling for Quick Tests
 
@@ -73,7 +73,7 @@ SUBSET = 0.1    # use 10% of dataset
 N_SAMPLES = 5000
 ```
 
-To train on the full dataset, set both to `None`.
+To train on the full dataset, set both to None.
 
 ---
 
@@ -92,7 +92,7 @@ Optional features include **ReduceLROnPlateau** scheduling and **early stopping*
 
 ## Visualizing Self-Attention
 
-The notebook captures attention weights from each encoder layer by explicitly calling `MultiheadAttention` with `need_weights=True`.
+The notebook captures attention weights from each encoder layer by explicitly calling MultiheadAttention with need_weights=True.
 
 Use the provided function:
 
@@ -109,7 +109,7 @@ visualize_attention_on_batch(
 
 ### Interpreting Attention
 
-* Attention tensor shape: `(B, H, T, S)` = batch, heads, query positions, source positions.
+* Attention tensor shape: (B, H, T, S) = batch, heads, query positions, source positions.
 * Each row (query position) sums to 1 across source positions (softmax weights).
 * Heatmaps show how tokens attend to one another.
 
