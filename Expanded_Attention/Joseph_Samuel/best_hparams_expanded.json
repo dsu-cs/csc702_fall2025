@@ -1,0 +1,1 @@
+{"best_params": {"d_model": 512, "nhead": 4, "num_layers": 5, "lr": 0.0004991511603841531}, "best_val_loss": 0.007351691258521989, "n_trials": 10}
