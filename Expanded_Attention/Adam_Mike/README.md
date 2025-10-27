@@ -1,1 +1,1 @@
-There's some prelim work in model.py, but the project is in the .ipynb.
+There's some preliminary work here, but the project is in ../Mike_Adam.
