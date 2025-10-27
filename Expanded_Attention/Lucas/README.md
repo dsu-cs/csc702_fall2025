@@ -19,7 +19,4 @@ Sequence Length Limiting: Essentially a sliding window for context. Always looks
 
 ## Model Optimization
 
-I used GELU activication instead of ReLU which is what chatGPT uses. This results in better gradients and better training. I also normalized before attention and the feedfoward network, because it has the potential to train a deeper model. I implemented 8 bit quantization which means the model stores weights as integers instead of floats, which results in a 4 times reduction in model size with a minimal accuracy loss.
-
-## Results
-
+I used GELU activication instead of ReLU which is what chatGPT uses. This results in better gradients and better training. I also normalized before attention and the feedfoward network, because it has the potential to train a deeper model. I implemented 8 bit quantization which means the model stores weights as integers instead of floats, which results in a 4 times reduction in model size with a minimal accuracy loss
