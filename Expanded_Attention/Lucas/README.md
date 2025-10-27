@@ -20,3 +20,21 @@ Sequence Length Limiting: Essentially a sliding window for context. Always looks
 ## Model Optimization
 
 I used GELU activication instead of ReLU which is what chatGPT uses. This results in better gradients and better training. I also normalized before attention and the feedfoward network, because it has the potential to train a deeper model. I implemented 8 bit quantization which means the model stores weights as integers instead of floats, which results in a 4 times reduction in model size with a minimal accuracy loss
+
+## Results
+
+Epoch 5/5, Batch 20380, Loss: 0.0443, LR: 0.000854
+Epoch 5/5, Batch 20390, Loss: 0.0458, LR: 0.000854
+Epoch 5/5, Batch 20400, Loss: 0.0346, LR: 0.000854
+Epoch 5/5, Batch 20410, Loss: 0.0298, LR: 0.000854
+Epoch 5/5, Batch 20420, Loss: 0.0472, LR: 0.000854
+Epoch 5/5, Batch 20430, Loss: 0.0337, LR: 0.000854
+Epoch 5/5, Batch 20440, Loss: 0.0413, LR: 0.000854
+Epoch 5/5, Batch 20450, Loss: 0.0414, LR: 0.000854
+Epoch 5/5, Batch 20460, Loss: 0.0594, LR: 0.000854
+Epoch 5/5, Batch 20470, Loss: 0.0436, LR: 0.000854
+Epoch 5 completed. Average Loss: 0.0462
+Generated text:
+﻿The Project GutenbeGuutteot G b bobbetbrouenbb be G oy ct ecbebot b o the bonb bbe bubbnebbo jebebebe betbbebbebbbbbbet
+
+The results are not directly compared to my pervious model because I didn't use the same tokenization method as before, but i am seeing significantly better loss than the previous model. I couldn't get my code to run on the virtual machine so I ran it on my desktop at home. It took around an hour on my cpu which is pretty decent I think. I was more rushed on this than i would have liked so I didn't get to do as much experimenting, I was just trying to get it working. 
