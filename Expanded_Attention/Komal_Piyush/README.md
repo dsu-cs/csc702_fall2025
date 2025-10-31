@@ -1,10 +1,10 @@
-# 🧠 Hybrid Sequential Transformer for Sentiment Analysis
+# Hybrid Sequential Transformer for Sentiment Analysis
 
 This project implements a **hybrid Transformer architecture** that combines a custom-built **Mini-Transformer** (with dot-product self-attention) and **BERT** for sentiment classification on the **IMDB movie review dataset**. The model is designed to explore and compare different attention mechanisms and their effectiveness in NLP.
 
 ---
 
-## 🚀 Features
+## Features
 - Custom **Mini-Transformer Encoder** implementation from scratch using PyTorch.
 - **BERT integration** for hybrid sequential learning.
 - **Attention visualization** across layers and heads.
@@ -13,7 +13,7 @@ This project implements a **hybrid Transformer architecture** that combines a cu
 
 ---
 
-## 🧩 Project Structure
+## Project Structure
 
 | Section | Description |
 |----------|--------------|
@@ -27,14 +27,14 @@ This project implements a **hybrid Transformer architecture** that combines a cu
 
 ---
 
-## ⚙️ Requirements
+## Requirements
 ```bash
 pip install torch torchvision transformers pandas scikit-learn matplotlib seaborn
 ```
 
 ---
 
-## 🧮 Training
+## Training
 
 Run all cells sequentially in **Google Colab** or **Jupyter Notebook**:
 ```python
@@ -48,25 +48,21 @@ You can adjust:
 
 ---
 
-## 📊 Results
+## Results
 - Achieves ~87% test accuracy on IMDB dataset.
 - Demonstrates consistent performance across attention mechanisms.
 - Visualization shows clear focus of self-attention heads on sentiment-heavy tokens.
 
 ---
 
-## 💾 Outputs
+## Outputs
 After successful training:
 - `hybrid_sentiment_model.pt` → saved model weights  
 - `vocab.json` → vocabulary mappings  
 
 ---
 
-## 🧠 Visualization Example
+## Visualization Example
 Attention maps and sentiment class predictions can be visualized directly in the notebook through matplotlib and seaborn heatmaps.
 
 ---
-
-## 🧍 Author
-**[Your Name]**  
-Hybrid Transformer implementation for CSC702 (Fall 2025) — Expanded Attention Project.
