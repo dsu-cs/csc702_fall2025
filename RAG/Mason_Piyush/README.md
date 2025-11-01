@@ -1,0 +1,4 @@
+For this project, we decided to compare a basic advanced RAG system to an Advanced RAG system with a different Reranking approach. For this, normally, it uses a cross-encoder. This will be used in the first variation. For the second version, we will use a small LLM to rank the files for context and similarity. This is for reranking retrieved indices to decide what to return to the context window to determine what is most important for the LLM retrieving from the RAG system to know.
+
+For our pipeline, we are connecting a BERT-Large model to an Advanced RAG system, and again, one version will use a cross-encder to rerank, whereas the other will use a LLM (BERT-Base). This will return (most likely) two different types of results that we can compare to determine differences in things like run time speed, efficiency, accuracy impact, etc. for the different variations of Advanced RAG.
+
