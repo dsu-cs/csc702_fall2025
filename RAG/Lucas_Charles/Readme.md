@@ -25,4 +25,5 @@ pip install chromadb sentence-transformers wikipedia-api
 pip install ollama
 
 download locally
+sudo snap install ollama
 ollama pull llama3.2
