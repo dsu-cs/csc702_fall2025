@@ -1,0 +1,6 @@
+### Knowledge Graph RAG
+For this project, we wanted to build a knowledge graph for our RAG system. This has proven to be very manual process that involves more database design than originally believed when conceptualized. When researching this problem it was found that there are unsupervised learning methods that can autonomously generate the graph structure for the model, but this is outside of our current understanding and might require more time than a weekend project.   
+
+## main.py
+This file implements a very basic, manually created knowledge graph. This implementation does not focus on adding retrieved documents to a prompt for analysis with a full power model but instead focuses on finding information in the graph through a cosign similarity with a small in memory vector database. Focusing on the node dataclass, in this project it contains simple key: value pairs of information that can be matched for similarity, in a larger project it could be imagined that this would instead contain larger documents or other information that can be integrated into a prompt to an LLM. If you were to experiment with the queries, you would notice they don't return very useful answers outside of the ones currently added; to improve this better integration with a large model would be required. 
+
