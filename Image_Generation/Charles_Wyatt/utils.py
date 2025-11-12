@@ -9,8 +9,11 @@ from torchvision.utils import save_image, make_grid
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
+import random
+import cv2
+import io
 
-class PairedImageDataset(Dataset):
+class CorruptionDataset(Dataset):
     def __init__(self, root_dir, transform=None, input_transform=None, target_transform=None):
         self.root_dir = root_dir
         self.image_files = sorted(os.listdir(root_dir))
@@ -35,38 +38,63 @@ class PairedImageDataset(Dataset):
     def __len__(self):
         return len(self.image_files)
     
-    # override this depending on project choice
     def generate_input_variant(self, img):
         arr = np.array(img)
-        # simple corruption example of gaussian noise
-        # we should look at updating this if we use it
-        noise = np.random.normal(0, 25, arr.shape).astype(np.int16)
-        arr = np.clip(arr + noise, 0, 255).astype(np.uint8)
+
+        def gaussian_noise(arr, std_range=(10,30)):
+            sigma = random.uniform(*std_range)
+            noise = np.random.normal(0, sigma, arr.shape)
+            return np.clip(arr + noise, 0, 255).astype(np.uint8)
+        
+        def blur(arr):
+            k = random.choice([3,5,7])
+            kernel = np.zeros((k,k))
+            kernel[k//2,:] = np.ones(k)
+            kernel = kernel / k
+            return cv2.filter2D(arr, -1, kernel)
+        
+        def jpeg_compression(arr, quality_range=(40,90)):
+            img_pil = Image.fromarray(arr)
+            buffer = io.BytesIO()
+            img_pil.save(buffer, format='JPEG', quality=random.randint(*quality_range))
+            buffer.seek(0)
+            jpeg_compressioned = Image.open(buffer)
+            return np.array(jpeg_compressioned)
+        
+        def salt_and_pepper(arr, prob=0.01):
+            noisy = np.copy(arr)
+            num_salt = np.ceil(prob * arr.size * 0.5)
+            coords = [np.random.randint(0, i - 1, int(num_salt)) for i in arr.shape[:2]]
+            noisy[coords[0], coords[1],:] = 255
+
+            num_pepper = np.ceil(prob * arr.size * 0.5)
+            coords = [np.random.randint(0, i - 1, int(num_pepper)) for i in arr.shape[:2]]
+            noisy[coords[0], coords[1],:] = 0
+            return noisy
+
+
+        # choose number of corruptions to apply (usually 1, sometimes 2)
+        num_corruptions = 1 if random.random() < 0.8 else 2
+        corruptions = random.sample([
+            'gaussian_noise',
+            'blur',
+            'jpeg_compression',
+            'salt_and_pepper'
+        ], num_corruptions)
+
+        for corruption in corruptions:
+            match corruption:
+                case 'gaussian_noise':
+                    arr = gaussian_noise(arr)
+                case 'blur':
+                    arr = blur(arr)
+                case 'jpeg_compression':
+                    arr = jpeg_compression(arr)
+                case 'salt_and_pepper':
+                    arr = salt_and_pepper(arr)
+
+        arr = np.clip(arr, 0, 255).astype(np.uint8)
         return Image.fromarray(arr)
-    
-'''
-# if we choose corruption project
-from utils import PairedImageDataset
-import torchvision.transforms.functional as TF
-import cv2
-import numpy as np
-
-class CorruptionDataset(PairedImageDataset):
-'''
-
-'''
-# if we choose coloring sketches project
-from utils import PairedImageDataset
-import cv2
-import numpy as np
-
-class SketchDataset(PairedImageDataset):
-    def generate_input_variant(self, img):
-        arr = np.array(img)
-        edges = cv2.Canny(arr, 80, 150)
-        edges_rgb = np.stack([edges]*3, axis=-1)
-        return Image.fromarray(edges_rgb)
-'''
 
 
 
@@ -128,9 +156,10 @@ class UNet(nn.Module):
 def train_model(model, dataloader, device, epochs=5, lr=1e-4):
     model = model.to(device)
     optimizer = optim.Adam(model.parameters(), lr=lr)
-    criterion = nn.L1Loss()
+    criterion = nn.SmoothL1Loss(beta=0.5)
 
     for epoch in range(epochs):
+        model.train()
         for i, (x,y) in enumerate(dataloader):
             x, y = x.to(device), y.to(device)
             preds = model(x)
