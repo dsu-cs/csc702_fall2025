@@ -28,4 +28,13 @@ Then we run our experiment. This ended up giving us our results. From here we di
 
 
 ANALYSIS: 
+The results from the 3 different timestep variations were not what we expected. All of the final images appeared to be identical to the human eye, and even with the numeric scoring using CLIP and LPIPS we see very little difference between the 3 images.  clip_baseline  clip_coarse  clip_dynamic  
+0       0.365404     0.375605      0.365404  
+1       0.356073     0.368277      0.356073 
 
+The running time did improve significantly from the baseline method, with a roughly 15 second decrease in running time for the coarse method. 
+prompt_idx  seed  time_baseline_s  time_coarse_s  time_dynamic_s  \
+0           0    23        36.579671      20.558656       34.017078   
+1           0    42        34.906709      19.937115       34.531759   
+
+The uneventful results could be a result of many different factors. The model we are using is very well trained and that could be compensating for the lack of timesteps. 
