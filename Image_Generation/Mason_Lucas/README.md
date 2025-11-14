@@ -37,4 +37,4 @@ prompt_idx  seed  time_baseline_s  time_coarse_s  time_dynamic_s  \
 0           0    23        36.579671      20.558656       34.017078   
 1           0    42        34.906709      19.937115       34.531759   
 
-The uneventful results could be a result of many different factors. The model we are using is very well trained and that could be compensating for the lack of timesteps. 
+The uneventful results could be a result of many different factors. Diffusion models are trained to be efficient, they train on thousands of noise levels but when generation occurs it knows how to jump through the network and noise schedule more efficiently. 20 time steps is more than enough to generate the image, everything else after that is mostly just refinements of the image. Anything after 40 or 50 steps isn't doing much. The first couple steps of the generation are the most important, because most of the structure comes in those steps. The performance is more determined by the model itself and the prompt rather than the step count. 
