@@ -15,3 +15,5 @@ A quick rundown of what to look for in each file.
 * `utils.py` - Early utilities such as our custom dataloader and UNet model
 
 ## Results and remarks
+**Our model is not uploaded to github because the file is too large!**
+The model seems to do decent with removing the noise added to the images; however, there are occasionally some quirks that show through, and the model seems to be more likely to trip up when multiple noise methods are added to an image. This may very well be because it sees relatively few of these in training.
