@@ -169,11 +169,27 @@ def train_model(model, dataloader, device, epochs=5, lr=1e-4):
             loss.backward()
             optimizer.step()
 
+            last_loss = loss.item()
+
             if i % 50 == 0:
                 print(f'epoch [{epoch+1}/{epochs}] batch [{i}/{len(dataloader)}] loss: {loss.item():.4f}')
         save_image(preds[:4], f'outputs/epoch_{epoch+1}.png')
 
+        # save model checkpoint
+        os.makedirs("checkpoints", exist_ok=True)
+        torch.save({
+            "epoch": epoch + 1,
+            "model_state_dict": model.state_dict(),
+            "optimizer_state_dict": optimizer.state_dict(),
+            "loss": last_loss
+        }, f"checkpoints/model_epoch_{epoch+1}.pth")
 
+        print(f"Saved model for epoch {epoch+1}")
+
+        del preds
+        torch.cuda.empty_cache()
+
+    return last_loss
 
 # visualization & evaluation
 def show_batch(inputs, outputs, targets):
