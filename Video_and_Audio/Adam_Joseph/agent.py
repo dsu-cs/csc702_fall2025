@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 USER_ID = "Joseph"
-SESSION_ID = int(datetime.datetime.now().timestamp())
+SESSION_ID = str(datetime.datetime.now().timestamp())
 
 # Mock functions to use as tools
 def get_weather(city: str) -> dict:
@@ -101,8 +101,9 @@ async def call_agent(runner: Runner, user_text: str):
 
 
 async def main():
-    session_service = DatabaseSessionService(db_url='sqlite+aiosqlite:///./agent_sessions.db')
-    
+    #session_service = DatabaseSessionService(db_url='sqlite+aiosqlite:///./agent_sessions.db')
+    session_service = InMemorySessionService()
+
     await session_service.create_session(
         app_name = "voice_app",
         user_id = USER_ID,
@@ -154,4 +155,4 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         pass
     finally:
-        os._exit(0) 
+        ...#os._exit(0) 
