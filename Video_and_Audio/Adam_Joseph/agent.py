@@ -1,13 +1,18 @@
 import asyncio
 import datetime
+import os
 from zoneinfo import ZoneInfo
 from google.genai import types
 from google.adk.agents import Agent
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService, DatabaseSessionService
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 USER_ID = "Joseph"
-SESSION_ID = "1"
+SESSION_ID = int(datetime.datetime.now().timestamp())
 
 # Mock functions to use as tools
 def get_weather(city: str) -> dict:
@@ -75,25 +80,6 @@ root_agent = Agent(
     tools=[get_weather, get_current_time],
 )
 
-#session_service = InMemorySessionService()
-session_service = DatabaseSessionService(db_url='sqlite+aiosqlite:///./agent_sessions.db')
-
-async def init_runner():
-    
-    await session_service.create_session(
-        app_name = "voice_app",
-        user_id = USER_ID,
-        session_id = SESSION_ID
-    )
-
-    runner = Runner(
-        agent = root_agent,
-        app_name = "voice_app",
-        session_service = session_service
-    )
-
-    return runner
-
 
 async def call_agent(runner: Runner, user_text: str):
     content = types.Content(role = "user", parts = [types.Part(text = user_text)])
@@ -115,19 +101,57 @@ async def call_agent(runner: Runner, user_text: str):
 
 
 async def main():
+    session_service = DatabaseSessionService(db_url='sqlite+aiosqlite:///./agent_sessions.db')
+    
+    await session_service.create_session(
+        app_name = "voice_app",
+        user_id = USER_ID,
+        session_id = SESSION_ID
+    )
 
-    runner = await init_runner()
+    runner = Runner(
+        agent = root_agent,
+        app_name = "voice_app",
+        session_service = session_service
+    )
 
     print("Enter messages (type 'quit' to exit):")
 
-    while True:
-        user_input = input("User > ")
-        if user_input.lower() == "quit":
-            break
+    try:
+        while True:
+            user_input = input("User > ")
+            if user_input.lower() == "quit":
+                break
+            
+            reply = await call_agent(runner, user_input)
+            print("Agent > ", reply)
+    finally:
+        print("Cleaning up resources...")
         
-        reply = await call_agent(runner, user_input)
-        print("Agent > ", reply)
+        # Close the database session service engine
+        if hasattr(session_service, '_engine') and session_service._engine is not None:
+            await session_service._engine.dispose()
+        elif hasattr(session_service, 'engine') and session_service.engine is not None:
+            await session_service.engine.dispose()
+
+        if hasattr(runner, 'close'):
+            await runner.close()
+        
+        # Cancel any remaining tasks
+        tasks = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
+        for task in tasks:
+            task.cancel()
+        
+        if tasks:
+            await asyncio.gather(*tasks, return_exceptions=True)
+
+    print("Exiting...")
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        pass
+    finally:
+        os._exit(0) 
