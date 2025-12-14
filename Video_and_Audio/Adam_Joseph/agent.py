@@ -4,7 +4,7 @@ from zoneinfo import ZoneInfo
 from google.genai import types
 from google.adk.agents import Agent
 from google.adk.runners import Runner
-from google.adk.sessions import InMemorySessionService
+from google.adk.sessions import InMemorySessionService, DatabaseSessionService
 
 USER_ID = "Joseph"
 SESSION_ID = "1"
@@ -75,7 +75,8 @@ root_agent = Agent(
     tools=[get_weather, get_current_time],
 )
 
-session_service = InMemorySessionService()
+#session_service = InMemorySessionService()
+session_service = DatabaseSessionService(db_url='sqlite+aiosqlite:///./agent_sessions.db')
 
 async def init_runner():
     
