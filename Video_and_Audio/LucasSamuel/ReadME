@@ -13,4 +13,4 @@ Commentary generation is handled via the Gemini Flash 2 LLM with a broadcast-sty
 
 The final step is combining the sythesized audio and original video clip. The audio is aligned with the video length, trimmed or padded to fit, and a new MP4 is created. 
 
-The results are not completely what we were shooting for, but are better then we initially thought was possible. All the models didn't always know what was happening, and misclassified some actions. 
+The results are not completely what we were shooting for, but are better then we initially thought was possible. All the models didn't always know what was happening, and misclassified some actions.Overall the BLIP model seemed to perform the best, with decent commentary that has some logic to it.  
