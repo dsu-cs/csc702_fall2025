@@ -1,7 +1,5 @@
-for upload
+For this project, we created a pipeline to generate latent representations from input videos.
 
-Create video generation pipeline for input videos.
-Create video generation for video inputs x1 and x2 via video generation pipeline.
-Maybe add quantization via https://github.com/huggingface/optimum-quanto/ (under FP8).
-In addition to the averaging mechanism, we can add add the difference of the the input videos. 
-Generate a video of the averaging and the difference.
+In doing so, we created averages from certain groups (features) of similar videos around a single concept (e.g. dodgeball). So, we would have a specific amount of videos that we then averaged latent space representations of into a single representation. We did so for every class and analyzed individual examples as well as the differernce between some averages when decoded and visualized.
+
+Further, we analyzed individual latent space representations of single somewhat-related videos. For instance, we worked with a video of a king and a video of a queen both walking down a steet. For this, we then analyzed what happened if we visualized the midpoint of their respective latent space representations, but also what happened in the circumstance that you 'remove' the direction of king-to-queenishness (the measure of the difference between these two videos). This was then subtracted or added to the videos to create, essentially, more extremely queeny or more extremely kingy videos in relation to the other. These are analyzed.
