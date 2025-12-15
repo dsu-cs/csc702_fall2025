@@ -1,0 +1,16 @@
+We chose to attempt play-by-play commentary on an NFL clip using computer vision and audio generation. 
+We used three different methods to attempt this with varying results and accuracy. 
+Our code samples frames from the video at fixed intervals, and these become the visual input for the models. The clip we provide has no audio. 
+
+The first model in a BLIP-2 model, which captions individual frames without predifined labels. They are timestamp style descriptions.
+
+The second model type is CLIP, and we tried two different methods. The first method we provide it with a .csv file with football actions, subcategories, and descriptions for the model. It first uses CLIP to classify a frame into a high level football phrase from the csv, such as pre-snap, passing play, defensive action. The second stage is classifiying the frame again, but using actions valid for that phrase, like snap, dropback, and interception. Temporal smoothing is applied so actions are more consitent across frames. 
+The second CLIP implementation is simpler and uses a flat list of predefined football actions. There is no phase heirachy and it is less precise. 
+
+The final model is a true video action recognition vision model. This uses VideoMAE and sentence embeddings. instead of frame-by-frame analysis, this approach encodes the entire video clip using VideoMAE, embeds textual action descriptions using Sentence Tranformers, and matches video and text embedding using cosine similarity. This outputs one dominant action for the whole clip. 
+
+Commentary generation is handled via the Gemini Flash 2 LLM with a broadcast-style system prompt to help guide the generation. Then it is fed into the Bark TTS model, and outputs a wav file with the audio. 
+
+The final step is combining the sythesized audio and original video clip. The audio is aligned with the video length, trimmed or padded to fit, and a new MP4 is created. 
+
+The results are not completely what we were shooting for, but are better then we initially thought was possible. All the models didn't always know what was happening, and misclassified some actions. 
