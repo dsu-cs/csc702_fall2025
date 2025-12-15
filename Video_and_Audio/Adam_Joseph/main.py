@@ -23,7 +23,7 @@ CHUNK_MS = 30                 # audio chunk size
 CHUNK_SAMPLES = SAMPLE_RATE * CHUNK_MS // 1000
 
 SPEECH_THRESHOLD = 0.01       # adjust if needed
-SILENCE_CHUNKS = 15           # ~450ms of silence
+SILENCE_CHUNKS = 30           # ~450ms of silence
 MAX_RECORD_SECONDS = 15
 
 
@@ -169,7 +169,7 @@ def transcribe_audio(audio):
 # Agent setup with tool declaration
 root_agent = Agent(
     name="weather_time_agent",
-    model="gemini-2.5-flash",
+    model="gemini-2.5-flash-lite",
     description=(
         "Agent to answer questions about the time and weather in a city."
     ),
