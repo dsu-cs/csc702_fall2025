@@ -1,0 +1,6 @@
+This program is a simulation to see the effects of multi-headed attention on different attention models based on different number of epochs. Each model is ran using 2-16 heads and doing epochs of 10, 100, and 1000. Statistics are recorded as the training goes to see the effectiveness of each model based on the chriteria of heads of attention and epochs. As these models are ran their strengths and weeknesses are shown to better understand when to use one model over the other. The results can be found as png files within this folder.
+
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
+![alt text](image-3.png)
