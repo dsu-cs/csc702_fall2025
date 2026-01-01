@@ -1,0 +1,14 @@
+<band_of_firm_grim>, Band of Firm Grim, BAND OF THE FIRM GRIP
+
+Rare Magic Item (Ring), Requires attunement by a spellcaster
+
+Helping Hand: This ring enables you to cast the Mage Hand cantrip.
+
+Firm Grip: The ring has 10 charges. You can expend charges to cast the
+following spells as an action: Hold person at 2nd level (3 charges), Hold
+monster at 5th level (5 charges) Bigby’s hand at 5th level (10 charges).
+After every long rest the ring regains 1d10 charges.
+
+Curse: Hold Tight: When you attune to the ring it clasps tighter around
+your finger. You are unable to take it off. It can only be removed by the
+spells Wish and Remove Curse or severing the finger itself.

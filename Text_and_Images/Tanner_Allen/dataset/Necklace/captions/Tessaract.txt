@@ -1,0 +1,14 @@
+<tessaract>, Tessaract, 'TESSERACT
+
+LEGENDARY - AMULET
+
+Infinity stone: Space and travel infused into
+a stone.
+
+MECHANICS
+
+You gain resistance to physical weapon
+damage and immunity to force damage.
+1/day you can cast "Teleport".
+
+(Requires attunement.)

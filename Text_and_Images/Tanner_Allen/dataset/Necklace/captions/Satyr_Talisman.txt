@@ -1,0 +1,13 @@
+<satyr_talisman>, TALISMAN OF THE SATYR
+
+Uncommon Magic Item, requires attunement
+
+Master of the Bow: When you attack a creature that is within 5ft range
+of you with a shortbow, longbow or any type of crossbow, you do not
+suffer from disadvantage on the ranged attack roll. Additionally you gain
+10 ft on your range (minimum and maximum) with these weapons.
+
+Sounds of the Forest: When attuned to this item you gain proficiency
+with Panflutes. With a successful Charisma (Performance) check (DC15)
+when playing a panflute, you can attract 1d8 birds from the surroundings.
+Most types of birds will happily tweet along to your song.

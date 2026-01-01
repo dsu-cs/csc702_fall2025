@@ -1,0 +1,14 @@
+<dance>, Dance, Damage: 1d4+1 Piercing
+Range: 20/60 ft
+
+Choreography of Returning: As a bonus action you can call back
+Dance to your hand, it flies in large loops, twirls and spins through the
+air. It dodges and weaves past any objects in it’s path. You can use this
+feature up to a range of 200 ft
+
+Song and Dance: When you make successful attacks with both Song
+(the rapier of this set) and Dance in one round, you deal an extra 1
+Piercing damage with each weapon.
+
+Two of a Kind: Attunement to both Song and Dance counts as a single
+attunement as they are a set.

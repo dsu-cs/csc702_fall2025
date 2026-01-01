@@ -1,0 +1,9 @@
+<eyetorch>, EyeTorch, EVERTORCH
+
+Uncommon Magic Item
+
+Lightbringer: This torch can burn infinitely. As a bonus action you can
+speak the command word of this torch. Doing so will make an
+unnaturally red flame appear. Providing bright light in a 30-foot radius
+and dim light for an additional 40 feet. If you make a melee Attack with
+the flame active, it deals 1 fire damage.

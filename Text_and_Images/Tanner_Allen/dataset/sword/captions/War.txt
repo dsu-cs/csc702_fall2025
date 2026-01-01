@@ -1,0 +1,26 @@
+<war>, War, War
+
+LEGENDARY - SWORD
+
+Hateful and always seeking destruction.
+
+MECHANICS
+
+Sentient Greatsword +3; Chaotic evil.
+
+INT +1
+
+WIS +3
+
+CHA +5
+
+Makes additional 2d6 Thunder damage.
+War cry: 3/day War grants your allies in a
+30ft. radius around you additional 2d6
+Thunder damage for one attack.
+
+Curse: You gain the following trait: Every
+enemy I fight must die. I do not care if I
+destroy precious objects in battle.
+
+(Requires attunement.)

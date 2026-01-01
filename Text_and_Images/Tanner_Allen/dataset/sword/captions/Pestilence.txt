@@ -1,0 +1,29 @@
+<pestilence>, Pestilence, PESTILENCE
+
+LEGENDARY - DAGGER
+
+Always enjoying the pain and suffer of
+others.
+
+MECHANICS
+
+Sentient Dagger +3; Neutral evil.
+
+INT +5
+
+WIS +3
+
+CHA +1
+
+Makes additional 3d4 Poison damage.
+Torture: 3/day Pestilence fills its target with
+painful poison. After a hit the target is
+paralyzed (escape CON DC 17) and gets 1d4
+poison damage and every round. If the
+target tries to escape, it gets one level of
+exhaustion.
+
+Curse: You gain the following trait: Every
+enemy I fight must suffer. If someone does
+not tell me what I want to know I will
+torture them until they do.

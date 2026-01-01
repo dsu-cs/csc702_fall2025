@@ -1,0 +1,34 @@
+<excalibur>, Excalibur, EXCALIBUR
+
+LEGENDARY - SWORD
+
+The most legendary, most mysterious sword
+in history - with a little side-effect...
+
+MECHANICS
+
+Sentient Longsword +4, lawful good.
+
+INT +4
+
+WIS +4
+
+CHA +4
+
+Damage rolls made with Excalibur make
+additional 2d8 radiant damage. If you roll a
+natural 20 with Excalibur, the damage dies
+are not doubled, but multiplied by four.
+Excalibur has four spell slots and casts
+"Shield of Faith" and "Bless" on you when
+you enter a battle. As a reaction, it casts
+"Shield" on you. Once it casted it, Excalibur
+regains all his spells slots, everytime you
+roll for initiative.
+
+However; you have to obey all rules of
+Excalibur. If you don't, it unattunes itself
+instantly and teleports away.
+
+(Requires attunement, mastering all four tests
+determined by the DM.)

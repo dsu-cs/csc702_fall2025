@@ -1,0 +1,18 @@
+<phoenix_circlut>, CIRCLET OF THE PHOENIX
+
+Very Rare Circlet, requires attunement by a Wizard, Sorcerer, Druid, Mystic or Warlock
+
+Heart of the Fire Plane: When attuned to this circlet you are resistant to
+Fire damage and gain a +2 bonus to your Spellcasting ability.
+
+Feather of the Phoenix: You can cast the spell Featherfall an unlimited
+amount of times using this circlet.
+
+Up in Flames (Hidden Feature): When a creature attuned to this item
+dies, they erupt in a burst of flames, creatures in a 10 ft radius have to
+make a Dexterity saving throw (DC 15) or receive 2d10 Fire damage , on
+a successful save they take half damage. The creature that was wearing
+the circlet and all the equipment they were carrying turn into ash. They
+appear and awake with full hitpoints after 1d4 hours on the Plane of Fire,
+wearing only the Luminous Vestments of the Phoenix. This feature is not
+discoverable by Detect Magic.

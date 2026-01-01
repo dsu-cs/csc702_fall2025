@@ -1,0 +1,22 @@
+<broken_valor>, Broken Valor, BROKEN VALOR
+
+VERY RARE - SWORD
+
+This blade is a very old, broken bastard
+sword. On one side an inscription in a lost
+
+language the other side, a single elvish
+word "Shadow"
+
+MECHANICS
+
+This weapon acts as a dagger until its
+command word is said then, Broken Valor
+casts Shadow Blade. When the spell is
+cast a black shadowy blade emmits from
+the end of the broken sword and now acts
+as short sword with the fineness light and
+thrown properties (range 20/60).Broken
+Valor does base damage of a short sword
+plus the spell damage. It has 5 charges
+and at dawn all charges are replenished.

@@ -1,0 +1,21 @@
+<red_dragon_dagger>, Red Dragon Dagger, DAGGER OF THE RED DRAGON
+
+Rare Dagger, requires attunement
+
+Damage: 1d4+2 Piercing
+
+Essence of Fire: Once per day you can cast Flame Strike (5th level)
+using this dagger. A vertical column of divine fire roars down from the
+heavens in a location you specify. Each creature in a 10-foot-radius,
+40-foot-high cylinder centered on a point within a 60ft range must make
+a Dexterity saving throw (DC 18). Acreature takes 4d6 fire damage and
+4d6 radiant damage on a failed save, or half as much damage on a
+successful one.
+
+Greed of the Red: Whenever you are near at least 5000 gold pieces that
+are not in your possession this blade begins to glow a soft red.
+
+Curse: Consumed by Fire and Greed: Whenever you have more than
+10000 gold in your possession and you use Essence of Fire, roll a D100,
+if you roll between 95-99 you get an insatiable urge to set your own
+equipment on fire.

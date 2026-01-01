@@ -1,0 +1,18 @@
+<vampire_lord_knife>, Vampire Lord Knife, KNIFE OF THE VAMPIRE LORD
+
+Very Rare Dagger (Finesse, Light, Range, Thrown) requires attunement
+
+Damage: 1d4+2 Piercing
+Range: 20/60
+
+Bloodmagic: As an action you can regain the spell slot of the last spell
+you have cast by wounding yourself with this dagger. You deal yourself
+1d4+2 Piercing damage and an additional 1d6 Necrotic damage per
+spell slot level. E.g. regaining a 5th level spell slot deals 1d4+2 Piercing
+damage and 5d6 Necrotic damage. You can regain any spell slot from
+1st level to a maximum of 6th level.
+
+If the last spell you cast was of 7th slot or higher you regain a 6th level
+spell slot instead, you roll 6d6 for this.
+
+You can use this feature only once per long rest.

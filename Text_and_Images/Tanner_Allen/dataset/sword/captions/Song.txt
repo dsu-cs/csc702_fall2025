@@ -1,0 +1,18 @@
+<song>, Song, Rare Rapier (Martial, Sword), requires attunement
+
+Damage: 1d8+1 Piercing
+
+Charming: You can use this rapier to cast Charm Person. The target
+has to make a Wisdom saving throw (DC 17). The creature makes the
+saving throw with advantage if you are currently fighting it, or it becomes
+charmed by you until the spell ends or someone in your party harms it.
+
+It will know it has been charmed when the spell ends. You can use this
+feature once every 3 days.
+
+Song and Dance: When you make successful attacks with both Song
+and Dance (the dagger of this set) in one round, you deal an extra 1
+Piercing damage with each weapon.
+
+Two of a Kind Attunement to both Song and Dance counts as a single
+attunement as they are a set.

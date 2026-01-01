@@ -1,0 +1,22 @@
+<desperate_respite>, Desperate Respite, Ring of Desperate Respite
+
+RING, RARE (REQUIRES ATTUNEMENT)
+
+Image Credit: From Software
+
+A ring carefully carved from a single stone. I feels surprisingly heavy
+while worn,
+
+‘This ring has 6 charges for the following other properties. The ring
+regains all expended charges daily at dawn.
+
+Harden. hs a reaction to taking damage from a melee or ranged
+weapon attack, you can expend 1 charge to gain the effects of
+stoneskin, including against the triggering attack, until the end of your
+next turn.
+
+Solidify As a bonus action, you can expend 2 or more charges to
+become immune to all damage until the end of your next turn, during
+which time you are also considered petrified. You can increase the
+duration ofthis effect by one round for each additional charge you
+expend beyond the second.

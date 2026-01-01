@@ -1,0 +1,11 @@
+<crimson_amplfier>, Crimson Amplfier, Very Rare Necklace, requires attunement by a spelicaster
+
+ATiny Drop: As a bonus action you can push your finger on the needle
+‘on top of this pendant, this drains a single drop of blood into the pendant
+and deals 1 Piercing damage. The first Evocation or Necromancy spell
+you cast within an hour deals an extra 344 damage or if it has a save, the
+DC increases by 2. Only amplifies spells of the attuned creature when its
+‘own blood is used. You can use this feature twice per day.
+
+Curse: Blood Sacrifice: When the amplifier accumulates 50 drops of
+blood it shatters and summons a Horned Devil and 3d4 imps.

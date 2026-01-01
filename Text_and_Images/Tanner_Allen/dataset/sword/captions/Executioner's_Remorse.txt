@@ -1,0 +1,19 @@
+<executioner's_remorse>, <executioners_remorse>, <executioner's_remorse>, Executioner's Remorse, EXECUTIONER’S REMORSE
+
+Rare Greatsword (Martial, Heavy, 2-Handed) requires attunement
+
+Damage: 2d6+2 Slashing
+
+Executioner’s Mercy: When making a successful attack using this
+sword you can choose to heal the target for 3d6. The damage of the
+sword is applied first. If a target is unconscious it fails a deathsave before
+the healing is applied. When attacking an undead creature this effect can
+be applied as Radiant damage instead. You can use this feature twice
+per day.
+
+Curse: Executioner’s Burden: When Executioners’ Mercy is used you
+start hearing the maddening voices from the dead for 1d8 hours. If there
+are more than 5 dead or undead creatures in a 200ft radius you have to
+make a Wisdom saving throw (DC15) every minute. On a failed save you
+take 2d4+2 psychic damage, on a successful save you are able to shut
+out the voices for 1 hour.

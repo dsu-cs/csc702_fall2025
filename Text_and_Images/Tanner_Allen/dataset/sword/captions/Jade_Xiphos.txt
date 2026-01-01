@@ -1,0 +1,16 @@
+<jade_xiphos>, Jade Xiphos, JADE XIPHOS
+
+Uncommon Shortsword (Martial, Finesse, Light)
+
+Damage: 1d6+1 Piercing
+
+Fine Balance: You receive a +1 bonus on Attack rolls and Damage rolls
+made with this weapon.
+
+Shards of Glass: If exposed to more than 30 points of Force or
+Thunder damage the blade violently vibrates itself into pieces. If the
+blade is stuck in a creature the shards deal 6d10 Piercing damage
+The sword itself is destroyed beyond repair in the process.
+
+A skilled bard might also be able to shatter the sword by singing a high
+note on a successful Charisma (Performance) check (DC 25).

@@ -1,0 +1,7 @@
+<ikkranian_gloves>, IKRIAN GLOVES
+
+Uncommon Magic Item (Gloves), requires attunement
+
+Herbologists Fingers: These gloves grant resistance against Poison
+and Necrotic damage. Furthermore when wearing these gloves you get a
++5 bonus on any rolls made that include making use of a Herbalism kit.

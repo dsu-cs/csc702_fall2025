@@ -1,0 +1,15 @@
+<gethering_storm>, HAND WRAPS OF THE GATHERING STORM
+
+Rare Magic Item (Cloth Handwraps) requires attunement by a monk
+
+Damage: (Unarmed Strike) + 1 Bludgeoning
+
+Fast as Lightening: You gain a +1 bonus on attack rolls and damage
+rolls when making Unarmed Strikes whilst wearing these hand wraps.
+
+Electrifying: These hand wraps can hold 10 charges. You can expend 5
+charges whenever you make unarmed strike to deal an extra 2d4+2
+Lightning damage. You gain one charge on every (non-electrified)
+unarmed strike you land on a hostile creature. You gain two charges
+when you land a critical hit. The charges deplete to 0 when you have not
+hit a hostile creature in 10 minutes.

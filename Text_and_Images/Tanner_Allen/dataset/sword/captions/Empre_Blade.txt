@@ -1,0 +1,12 @@
+<empre_blade>, Empre Blade, REINFORCED BLADE OF THE EMPIRE
+
+Common Shortsword
+
+Damage: 1d6+1 Slashing
+
+Military Precision: You receive a +1 bonus to Attack and Damage Rolls
+made with this weapon.
+
+Lawkeeper: If you are of a Lawful alignment you deal an extra 1d6
+Slashing damage to creatures with a Chaotic alignment on a successful
+attack using this sword.

@@ -1,0 +1,11 @@
+<giggling_dagger>, Giggling Dagger, Giggling Dagger
+
+Weapon (dagger), rare (requires attunement)
+
++1 to damage rolls and attack rolls using this magic weapon.
+This weapon comes as a pair of two Giggling Daggers.
+
+Giggle giggle. When you make a ranged attack with this dagger, it is completely
+silent. Creatures cannot identify the direction from which the dagger was thrown
+based on sound. Upon impact, the dagger then projects the sound of a child’s giggle
+originating from the point of impact.

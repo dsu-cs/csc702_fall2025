@@ -1,0 +1,13 @@
+<bladestaff>, BladeStaff, BLADESTAFF
+
+Uncommon Quarterstaff (Versatile)
+
+Damage: 1d6 (1d8) +1 Slashing
+
+Bladestorm: As an action you can cast the spell Cloud of Daggers
+(3rd level) with this staff. The spell lasts for one minute and requires
+concentration. You can use this feature once per day.
+
+You fill a 5-foot cube within a 60 ft range with daggers. A creature takes
+6d4 Slashing damage when it enters the area for the first time on a turn
+or starts its turn there.

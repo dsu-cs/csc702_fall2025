@@ -1,0 +1,13 @@
+<earthshakr_gauntlets>, Earthshakr Gauntlets, 
+
+Wondrous Item - Artifact Requires Attunement
+Cursed, The gauntlet replaces the users left hand over the course of 3 days. It can
+not be removed except by magical means.
+
+The gauntlets grant +1 to AC and Strength
+
+The gauntlet has 5 charges. You can expend a charge to cast one of the following
+spells (DC 18/+4) Mold Earth, Earth Tremor, Earthbind, Maximilian's Earthen
+Grasp, Erupting Earth, Stone Shape, Wall of Stone, and Transmute Rock.
+
+The gauntlet regains 1D4+3 charges daily, at dawn.

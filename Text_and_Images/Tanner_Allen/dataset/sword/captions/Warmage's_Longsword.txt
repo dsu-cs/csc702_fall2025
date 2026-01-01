@@ -1,0 +1,18 @@
+<warmage's_longsword>, <warmages_longsword>, <warmage's_longsword>, Warmage's Longsword, WARMAGE’S LONGSWORD
+
+Very Rare Longsword (Martial, Versatile), requires attunement by a spellcaster
+
+Damage: 1d8 (1d10) Slashing +2 Force
+
+Battleworn: You receive a +2 bonus on Attack rolls for this weapon.
+
+Knowledge of the Warmage: When you are attuned to this sword you
+receive a +2 bonus on Intelligence (Arcana) and Intelligence (History)
+checks.
+
+Arcane Barrage: This sword holds 5 Magic Missiles. As an action you
+can attack a target with them. You can cast any number of you have
+remaining in the sword. Each missile deals 1d4+1 Force damage. The
+missiles all strike simultaneously and you can direct them to hit one
+creature or several. You can only fire 5 missiles every day, at dawn the
+sword replenishes all of the missiles.

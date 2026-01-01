@@ -1,0 +1,26 @@
+<gravedigger's_staff>, <gravediggers_staff>, <gravedigger's_staff>, Gravedigger's Staff, GRAVEDIGGER’S STAFF
+
+Rare Staff, requires attunement by a Cleric, Wizard, Sorcerer or Warlock
+
+Final Hour: As an action you can cast the cantrip Toll the Dead.
+
+You can cast this 3 times per day, resets at midnight. The target must
+
+succeed on a Wisdom saving throw vs your spell save DC or take 2d8
+necrotic damage. If the target is missing any of its hit points, it instead
+takes 2d12 necrotic damage.
+
+Buried Alive: As an action you can cause the ground of a 5ft x 10ft
+rectangle (6ft deep) to dissolve and re-appear 20 ft above it. Creatures
+standing in the area have to make a Dexterity saving throw vs your spell
+save DC or drop 6ft into the grave and have the earth collapse down on
+them taking 6d10 bludgeoning damage. A buried creature is considered
+blinded, restrained and has total cover. It can escape by magical means,
+excavation by an ally (1 minute of digging) or a DC 20 strength check.
+The creature has air for (1+Constitution bonus) minutes. You can use this
+feature once per day, resets at midnight. Only works on sand, stone and
+earth.
+
+Curse: Grave Consequences: Whenever you deal a killing blow roll a
+D20, on a 1 the spirit of the gravedigger compels you to bury the creature
+(if it isn’t already).

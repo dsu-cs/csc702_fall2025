@@ -1,0 +1,13 @@
+<frog_amulet>, AMULET OF THE FROG
+
+Uncommon Magic Item (Necklace) requires attunement
+
+Leapfrog: Twice per day this amulet can be used to cast Jump.
+
+Amphibian: Your movement speed is not halved when swimming.
+
+Knowledge of the Swamp: If a Druid attunes to this necklace he gains
+the following beast shapes: Rat, Raven, Giant Rat, Poisonous Snake,
+Stirge, Constrictor Snake, Giant Frog, Giant Lizard, Giant Poisonous
+Snake, Crocodile, Giant Spider, Giant Toad, Giant Constrictor Snake
+and Giant Crocodile. This knowledge is permanent.

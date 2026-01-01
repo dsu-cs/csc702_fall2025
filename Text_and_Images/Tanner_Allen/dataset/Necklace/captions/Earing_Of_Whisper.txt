@@ -1,0 +1,13 @@
+<earing_of_whisper>, EARRING OF WHISPER
+
+Uncommon earring
+
+Jenga: This enchanted earring can send and receive the Message spell
+to and from other connectead earrings within 500 ft. To send a message
+the wearer must activate the earring by touching it. The earring will
+always passively receive messages. If the receiver is out of range they
+will hear nothing
+
+Can you hear me now?: Earrings can be connected by physically
+holding them together for 10 minutes, this connection is broken if both
+earrings are not within a 5 mile radius of each other for at least a week.

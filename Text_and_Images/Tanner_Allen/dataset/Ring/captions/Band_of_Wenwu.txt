@@ -1,0 +1,22 @@
+<band_of_wenwu>, Band of Wenwu, Art Credit: Leonecastro
+
+Banps OF WENWU
+Wonderous Item, legendary (requires attunement by a monk)
+
+A set of magical bracers that take the form of ten ancient
+metal bands worn around the forearm(s).
+
+While wearing these bracers, you gain a +1 bonus to AC if
+you are wearing no armor and using no shield. Additionally
+when you make an unarmed strike, your reach is 5 feet
+greater than normal and deal an additional 144 force
+damage.
+
+‘The braceres have 10 charges that are used to fuel the
+spells within them. Wisdom is your spelicasting modifier and
+it regains 2d4+2 charges daily at dawn. You can expend 1
+charge to cast lightning lure, catapult (bands only),
+thunderous smite (unarmed strike only) or shield. When you
+cast catapult, you can expend additional charges, up to half
+your proficiency bonus (rounded up) to cast at higher levels.
+‘The bands return to you whether they hit or not.

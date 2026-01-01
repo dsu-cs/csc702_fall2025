@@ -1,0 +1,17 @@
+<tempest_ring>, Tempest Ring, WRATH OF THE TEMPEST
+
+Rare Ring, requires attunement by a Cleric, Druid, Sorcerer or Wizard
+
+Stormcloud: Once per day you can use an action to cast Call Lightning
+(4th level) using this ring.
+
+At Home in the Storm: Any creature attuned to this ring gains a +1
+bonus to their Constitution score. If the attuned creature is a Tempest
+Cleric they also receive a +1 bonus on their Wisdom score. If they are a
+Storm Sorcerer they receive a +1 bonus to their Charisma score.
+
+Only one of these last two bonuses apply in case of multiclassing, it will
+always be the class the creature had first or has the most levels. If this
+is unclear, choose the highest score. If it's an even score, the creature
+
+chooses one of the two options.

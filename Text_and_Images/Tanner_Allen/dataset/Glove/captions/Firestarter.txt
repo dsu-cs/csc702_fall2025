@@ -1,0 +1,13 @@
+<firestarter>, Firestarter, 
+
+Wondrous Item - Artifact Requires Attunement
+Cursed, The gauntlet replaces the users right hand over the course of 3 days. It can
+not be removed except by magical means.
+
+The gauntlets grant +1 to AC and Strength
+
+The gauntlet has 5 charges. You can expend a charge to cast one of the following
+spells (DC 18/+4) Fire Bolt, Control Flames, Burning Hands, Flame Blade, Fireball,
+Wall of Fire, Pyrotechnics and Immolation.
+
+The gauntlet regains 1D4+3 charges daily, at dawn.

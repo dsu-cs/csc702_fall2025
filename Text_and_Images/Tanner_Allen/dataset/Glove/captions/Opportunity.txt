@@ -1,0 +1,17 @@
+<opportunity>, GLOVES OF OPPORTUNITY
+
+VERY RARE - GAUNTLETS
+
+Always ready to take the opportunity to
+steal carried items.
+
+MECHANICS
+
+While wearing these gloves, whenever a
+creature fails an attack roll against you
+with a critical 1, you can use your reaction
+to steal one of the items they are holding
+in their hands or wearing around their
+neck (your choice).
+
+(Requires Dexterity of 13 or more.)

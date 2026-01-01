@@ -1,0 +1,16 @@
+<dualty_blade>, Dualty Blade, DUALITY BLADE
+
+Rare Shortsword (Finesse, Light) requires attunement
+
+Damage: 1d4+1 Necrotic + 1d4+1 Radiant
+
+Streamers of Light: By speaking a command word you can envelop the
+sword in flowing streamers of light. This causes bright light in a 15ft
+radius and dim light in a 30 ft radius. If this is active whilst making an
+attack you deal 1d4 Necrotic and 1d4+2 Radiant damage instead.
+
+Blade of Darkness: The blade does not reflect any light itself and is
+hard to discern in dim light and darkness. When you are in dim light or
+darkness you receive a +3 bonus on your attack roll with this blade. You
+deal 1d4+2 Necrotic and 1d4 Radiant damage if you attack this way.
+Activating the Streamers of Light negates this effect.

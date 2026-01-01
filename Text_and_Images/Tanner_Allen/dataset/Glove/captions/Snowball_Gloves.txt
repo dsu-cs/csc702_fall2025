@@ -1,0 +1,13 @@
+<snowball_gloves>, SNOWBALL GLOVES
+
+Wondrous item, uncommon
+
+A person wielding this gloves can use an action to create a
+snowball. This snowballs count as thrown weapons with a range
+
+of 30 ft / 60 ft, dealing 1D4 cold damage + your Dexterity or
+Strength modifier. Additionally, if you make a critical hit, the target is
+blinded by the snow until the start of your next turn.
+
+Snowballs created by this gloves deals no damage if they’re not
+thrown, and they vanish mere seconds after being made.

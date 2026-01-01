@@ -1,0 +1,16 @@
+<fey_ring>, Fey Ring, RING OF THE FEY
+
+Rare Wondrous Item
+
+Brain of the Fey: When attuned to this ring you gain a +1 bonus to your
+intelligence. Additionally you gain a +2 bonus on any Intelligence
+(Arcana) and Intelligence (Nature) checks you make.
+
+Fey Ancestry: Whilst attuned to this ring you have advantage on saving
+throws against being charmed, and magic can’t put you to sleep.
+
+Light of the Feywild: This ring holds one charge of a special kind of
+Faerie Fire. This spell requires no concentration, lasts for 1 minute and is
+tints of orange and red. When you are in the Feywild both areas
+described in the description of the spell increase by 10ft. You can cast
+this spell once per day.

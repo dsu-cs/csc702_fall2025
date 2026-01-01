@@ -1,0 +1,18 @@
+<blade_of_the_northern_tribe>, Blade of the Northern Tribe, BLADE OF THE NORTHERN TRIBE
+
+Uncommon Longsword (Mara, Versaie,requresatunemant
+
+Damage 1d8+1 (1d10+1)
+
+Northern Smithing: You receive a +1 bonus to attack and damage rolls
+made with this weapon
+
+Frost edge: Every day at dawn this sword forms a thin lauer of
+razer sharp ice on it's edge. The first five successful attacks you make
+deals an extra 1d4 Cold damage. After five hits the layer of ice melts.
+
+A touch of cold: Once pe day as an action you can stick the sword in
+a surface of water to create a layer of ice in a 15 foot radius. All creatures
+in this area have to make a strength saving throw (DC 12) on a failure
+they are locked in the ice and considered restrained. on a success the 
+ice lauer breaks compleyely and quickly melts away.

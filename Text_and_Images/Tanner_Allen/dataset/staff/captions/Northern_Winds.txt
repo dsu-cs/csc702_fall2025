@@ -1,0 +1,17 @@
+<northern_winds>, Northern Winds, THE NORTHERN WINDS
+
+Very RareStaff, requires attunement by a wizard, druid, monk, sorerer, or ranger
+
+Artic Storm: A swirling storm of glittering ice appears within a 20ft tall
+50ft radus cilinder centered on a point you can see within a 120 range.
+When a creature enters the storm they have to make a constitution
+saving throw (DC 18) On failed save they take 3d6 Frost damage, on
+a successful save the damage is halved. duration: one minute, requires
+concentration. You can use this feature once per day
+
+
+Go with the Wind: You can cast the spell Wind Waker once every 3
+days using this Staff (Recharges 72 hours after casting)
+
+Frozen Fingers: When holding this staff in at least ona hand you are
+resisstant against Fost damage.
