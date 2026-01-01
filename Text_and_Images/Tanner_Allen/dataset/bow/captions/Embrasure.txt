@@ -1,0 +1,17 @@
+<embrasure>, Embrasure, EMBRASURE
+
+UNCOMMON - BOW
+
+Should I equip a shield? Or a bow? Why not
+both!
+
+MECHANICS
+
+As a reaction, you can say the words
+"Protect me!", to create a magical shield
+around the bow, adding +2 to your AC for
+this round. After using this feature two
+times, you have to finish a short rest before
+using it again.
+
+(Requires proficiency with longbows.)

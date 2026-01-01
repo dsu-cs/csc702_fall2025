@@ -1,0 +1,19 @@
+<mjolnir>, Mjolnir, MyoLnir
+
+LEGENDARY - HAMMER
+
+Only the ones worthy might wield the
+legendary hammer.
+
+MECHANICS
+
+Martial hammer +3, single~handed. On hit:
+1d8 bludgeoning + 1d8 lightning + 1d8
+thunder damage. You can also throw this
+hammer (30/90). After being thrown it
+returns to you. 3/day you can cast "Call
+lightning"; the spells save DC is 16. While
+holding Mjolnir you gain a flying speed of
+60 ft.
+
+(Requires good alignment, attunement.)

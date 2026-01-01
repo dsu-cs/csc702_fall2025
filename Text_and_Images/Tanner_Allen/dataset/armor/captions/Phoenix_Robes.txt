@@ -1,0 +1,13 @@
+<phoenix_robes>, Phoenix Robes, LUMINOUS VESTMENTS OF THE PHOENIX
+
+Legendary Robes, requires attunement by a Wizard, Sorcerer, Druid, Mystic or Warlock
+
+Soul of the Fire Plane: When attuned to this robe you are immune to
+Fire damage and resistant to Cold damage. You also gain a +4 bonus on
+your spellcasting ability.
+
+Flight of the Phoenix: As an action you can cast the spell Fly (6th level)
+with these robes. You can use this feature twice per day.
+
+Ashes to Ashes: As an action you can cast the spell Firestorm using
+this robe. You can use this feature once every 2 days.

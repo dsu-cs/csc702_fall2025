@@ -1,0 +1,11 @@
+<hills_axe>, Hills Axe, GREATAXE OF THE HILLS
+
+Common Greataxe (Heavy, 2-handed)
+
+Damage: 1d12+1 Slashing
+
+Big Hitter: You receive a +1 bonus to Attack and Damage Rolls made
+with this weapon.
+
+Over-axe-tend: Before making an attack roll with this weapon you can
+choose to take a -3 penalty on your attack roll to add 5ft of reach. (10ft)

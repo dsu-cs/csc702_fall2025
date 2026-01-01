@@ -1,0 +1,16 @@
+<crossbow>, Crossbow, DELILAH
+
+Very Rare Light Crossbow
+
+Damage: 1d8+2 Piercing
+Range: 80/320ft
+
+My Dearest Delilah: You gain a +2 bonus on any Ranged attack rolls
+made with this crossbow,
+
+Heartseeker: Before you attack a creature you can whisper a
+command word that magically enchants the next bolt you fire.
+You make the Ranged attack roll for this bolt with advantage.
+The bolt flies around any corners and ignores all cover.
+
+You can do this once per day.

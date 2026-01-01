@@ -1,0 +1,16 @@
+<thorn_bow>, THORN OF THE NORTH
+
+DAMAGE: 1D8 PIERCING
+
+Barbed shots: This bow hots 8 charges, every day a damn 1D6
+charges are regained, Before making an attack with this weapon you can
+expend a charge to add sharp thors to the arrow you are shootibg
+if your attakc is successful, add 1d4 piercing damage
+
+Might of we Thorns: Alternatively you can expend charges to cast the
+following spells:
+Hail of Thorns(1st level: 2 charges, every extra level costs 2 charges)
+Spike Growth(3 charges, DC 15 Perception)
+Grasping Vine (4 charges, DC 15 Dexterity saving throw),
+
+You can ony use one of hese efects per round

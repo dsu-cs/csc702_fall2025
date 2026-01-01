@@ -1,0 +1,19 @@
+<viola_crossbow>, Viola Crossbow, VIOLA CROSSBOW
+
+Weapon (Light Crossbow), Instrument (Viola), Rare
+
+Cost: 200 gp
+
+Damage: 1d8 piercing
+
+Weight: 5 Ibs
+
+Properties: Ammunition, Loading, (Range 80/320),
+‘Two-Handed, Slow
+
+‘The Viola Crossbow serves as the perfect ranged
+weapon for a bard, as it doubles as an instrument. Asa
+bonus action, the user may switch between Viola and
+Crossbow form. The weapon can be loaded with
+specially designed viola bows that double as bolts, as
+well as regular crossbow bolts.

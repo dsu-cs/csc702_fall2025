@@ -1,0 +1,18 @@
+<permafrost_axe>, Permafrost Axe, PERMAFROST AXE
+
+Very Rare Handaxe (Light, Thrown) requires attunement
+
+Damage: 1d6 Slashing +2 Frost
+Range: 20/60ft
+
+Cold Edge: You receive a +2 bonus to Attack rolls for attacks made with
+this weapon.
+
+Arctic Circle: As a bonus action whilst holding this weapon, you can
+make this weapon summon a small blizzard in a 15ft radius around it
+which lasts for 30 seconds. This area is considered rough terrain.
+
+You do not have to hold the weapon for the duration, only to activate it.
+Every time a creature ends its turn in the blizzard they have to succeed
+on a Constitution saving throw (DC15) or suffer 6 Frost damage. You can
+use this feature twice per day
